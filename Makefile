@@ -1,5 +1,5 @@
 NAME = minishell
-SRC = 
+SRC = main.c
 LIBFT = libft/libft.a
 HEADERFILES = -I minishell.h libft/libft.h
 OBJFILES = $(SRC:.c=.o)
