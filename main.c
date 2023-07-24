@@ -12,6 +12,39 @@
 
 #include "minishell.h"
 
+int	*symbolcount(char *str)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (str[i])
+	{
+		if ((str[i] == '|' || str[i] == '>' || str[i] == '<') && (str[i - 1] == ' '))
+		{
+			count++;
+			i++;
+			if	((str[i] == '|' || str[i] == '>' || str[i] == '<') && (str[i + 1] == ' '));
+			{
+				count++;
+				i++;
+			}
+		}
+		i++;
+	}
+}
+
+char *spaceit(t_mini *mini, char *str)
+{
+	int		i;
+	char	*spaced;
+
+	i = 0;
+
+
+}
+
 char	**findpath(char **envp)
 {
 	int		i;
