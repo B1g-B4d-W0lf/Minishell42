@@ -1,14 +1,14 @@
 NAME = minishell
 SRC = main.c
 LIBFT = libft/libft.a
-HEADERFILES = -I minishell.h libft/libft.h
+HEADERFILES = -I minishell.h 
 OBJFILES = $(SRC:.c=.o)
 CFLAGS = -Wall -Wextra -Werror -g3
 CC = cc
 
 $(NAME): $(OBJFILES)
 #	make -c libft
-	$(CC) $(CFLAGS) $(OBJFILES) ${LIBFT} -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJFILES) ${LIBFT} -o $(NAME) -lreadline
 
 all: $(NAME)
 

@@ -6,13 +6,13 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 17:33:26 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/07/22 19:21:39 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/07/24 22:44:44 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	*symbolcount(char *str)
+int	symbolcount(char *str)
 {
 	int	i;
 	int	count;
@@ -21,11 +21,11 @@ int	*symbolcount(char *str)
 	count = 0;
 	while (str[i])
 	{
-		if ((str[i] == '|' || str[i] == '>' || str[i] == '<') && (str[i - 1] == ' '))
+		if ((str[i] == '|' || str[i] == '>' || str[i] == '<') && (str[i - 1] != ' '))
 		{
 			count++;
 			i++;
-			if	((str[i] == '|' || str[i] == '>' || str[i] == '<') && (str[i + 1] == ' '));
+			if	((str[i] == '>' || str[i] == '<') && (str[i + 1] != ' '))
 			{
 				count++;
 				i++;
@@ -33,16 +33,41 @@ int	*symbolcount(char *str)
 		}
 		i++;
 	}
+	return (i + count);
 }
 
-char *spaceit(t_mini *mini, char *str)
+char *spaceit(char *str)
 {
 	int		i;
+	int		j;
 	char	*spaced;
 
 	i = 0;
-
-
+	j = 0;
+	spaced = malloc(symbolcount(str) * sizeof(char) + 1);
+	while (str[i])
+	{
+		if ((str[i] == '|' || str[i] == '>' || str[i] == '<') && (str[i - 1] != ' '))
+		{
+			spaced[j] = ' ';
+			j++;
+			spaced[j] = str[i];
+			j++;
+			i++;
+			if	((str[i] == '>' || str[i] == '<') && (str[i + 1] != ' '))
+			{
+				spaced[j] = str[i];
+				j++;
+				spaced[j] = ' ';
+				j++;
+				i++;
+			}
+		}
+		spaced[j] = str[i];
+		j++;
+		i++;
+	}
+	return (spaced);
 }
 
 char	**findpath(char **envp)
@@ -73,9 +98,13 @@ int	main(int argc, char **argv, char **envp)
 	mini.exit = 0;
 	while (mini.exit == 0)
 	{
-		ft_putstr_fd("minishell ➤", 0);
-		mini.input = get_next_line(0);
+		mini.input = readline("minishell ➤ ");
+		if (mini.input != NULL && *mini.input != '\0')
+		{
+			add_history(mini.input);
+		}
 		if (!ft_strncmp(mini.input, "exit", 4))
 			mini.exit = 1;
+		printf("%s\n", spaceit(mini.input));
 	}
 }
