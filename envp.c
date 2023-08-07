@@ -1,34 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   envp.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/22 17:33:26 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/07/29 19:46:09 by wfreulon         ###   ########.fr       */
+/*   Created: 2023/07/29 19:45:34 by wfreulon          #+#    #+#             */
+/*   Updated: 2023/07/29 19:46:01 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+char	**findpath(char **envp)
 {
-	t_mini	mini;
-	
-	(void)argc;
-	(void)argv;
-	mini.paths = findpath(envp);
-	mini.exit = 0;
-	while (mini.exit == 0)
+	int		i;
+	char	**paths;
+
+	i = 0;
+	while (envp && envp[i])
 	{
-		mini.input = readline("minishell ➤ ");
-		if (mini.input != NULL && *mini.input != '\0')
+		if (!ft_strncmp("PATH", envp[i], 4))
 		{
-			add_history(mini.input);
+			paths = ft_split(envp[i] + 5, ':');
+			return (paths);
 		}
-		if (!ft_strncmp(mini.input, "exit", 4))
-			mini.exit = 1;
-		printf("%s\n", spaceit(mini.input));
+		i++;
 	}
+	return (NULL);
 }
