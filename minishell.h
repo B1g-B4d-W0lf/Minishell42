@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 17:31:41 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/09/06 00:45:02 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/09/06 20:50:46 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct s_cmd
 	char	**cmd;
 	char	*path;
 	char	token;
+	int		nbr;
 }		t_cmd;
 typedef struct s_mini
 {
