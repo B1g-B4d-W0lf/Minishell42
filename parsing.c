@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:44:06 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/09/06 21:31:20 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/09/11 17:33:21 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ char	*spaceit(char *str)
 	i = 0;
 	j = 0;
 	spaced = malloc(symbolcount(str) * sizeof(char) + 1);
+	if (!spaced)
+		return (NULL);
 	while (str[i])
 	{
 		if ((str[i] == '|' || str[i] == '>' || str[i] == '<') && (str[i - 1] != ' '))
@@ -67,6 +69,7 @@ char	*spaceit(char *str)
 		j++;
 		i++;
 	}
+	spaced[j] = '\0';
 	return (spaced);
 }
 //trouver le token pr le renvoyer dans la struct pr exec
@@ -103,35 +106,49 @@ int	ispipe(char *str)
 	}
 	return (pipe);
 }
+
+t_cmd	*fillcmd(char *str, int nbr)
+{
+	t_cmd	*cmd;
+	
+	cmd = malloc(sizeof (t_cmd));
+	if (!cmd)
+		return (NULL);
+	cmd->token = findtoken(str);
+	cmd->cmd = ft_split(str, ' ');
+	cmd->nbr = nbr;
+	return (cmd);
+}
 //separer et stocker les infos de la ligne dans la struct
-void	parse(t_mini *mini)
+t_mini	parse(t_mini *mini)
 {
 	char	*spaced;
 	char	**piped;
-	t_cmd	*cmd = NULL;
-	int		nbr = 1;
+	t_cmd	**cmd;
+	int		nbr = 0;
 	int		i = 0;
 	
 	spaced = spaceit(mini->input);
+	cmd = NULL;
 	if (ispipe(spaced) == 0)
 	{
-		cmd[nbr].token = findtoken(spaced);
-		cmd[nbr].cmd = ft_split(spaced, ' ');
-		cmd[nbr].nbr = nbr;
-		mini->cmds = &cmd[nbr];
+		cmd = malloc(sizeof (t_cmd));
+		*cmd = fillcmd(spaced, nbr);
+		mini->cmds = cmd;
 	}
 	else if (ispipe(spaced))
 	{
+		cmd = malloc(sizeof (t_cmd) * ispipe(spaced));
 		piped = ft_split(spaced, '|');
 		while (piped[i])
 		{
-			cmd[nbr].token = findtoken(piped[i]);
-			cmd[nbr].cmd = ft_split(piped[i], ' ');
-			cmd[nbr].nbr = nbr;
+			cmd[nbr] = fillcmd(piped[i], nbr);
 			nbr++;
 			i++;
 		}
+		freedoubletab(piped);
 		mini->cmds = cmd;
 	}
-	return ;
+	free(spaced);
+	return (*mini);
 }

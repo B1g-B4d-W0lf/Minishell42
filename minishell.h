@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 17:31:41 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/09/06 20:50:46 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/09/11 14:30:31 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,23 @@ typedef struct s_cmd
 typedef struct s_mini
 {
 	char 	**paths;
-	char	**parsed;
 	char	*input;
-	t_cmd	*cmds;
+	t_cmd	**cmds;
 	int		exit;
 }		t_mini;
 
 //main.c
 
 //parsing.c
-void	parse(t_mini *mini);
+t_mini	parse(t_mini *mini);
 int		symbolcount(char *str);
 char	*spaceit(char *str);
 
 //envp.c
 char	**findpath(char **envp);
+
+//free.c
+void	cleanleak(t_mini *mini);
+void	freedoubletab(char **tab);
 
 #endif
