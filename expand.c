@@ -6,12 +6,12 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 17:57:15 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/09/13 16:19:05 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/09/14 15:10:42 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+//donne la taille du double tableau (pour le malloc)
 int	sizeofdoubletab(char **tab)
 {
 	int	i;
@@ -35,7 +35,7 @@ int	checkdollar(char **str)
 	}
 	return (0);
 }
-
+//cherche la valeur de la variable et la remplace dans le tableau yay
 char *seeknreplace(char *str)
 {
 	char *value;

@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 16:34:51 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/09/12 16:38:02 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/09/14 15:36:07 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,11 @@ char	*spaceit(char *str)
 		return (NULL);
 	while (str[i])
 	{
-		if ((str[i] == '|' || str[i] == '>' || str[i] == '<') && (str[i - 1] != ' '))
+		if ((str[i] == '|' || str[i] == '>' || str[i] == '<') &&
+			((str[i - 1] != ' ') && str[i - 1] != '\0'))
 		{
 			addspace(&i, &j, spaced, str);
-			if (str[i] != ' ' && str[i] != '<' && str[i] != '>')
+			if (str[i] && str[i] != ' ' && str[i] != '<' && str[i] != '>')
 				addspace(&i, &j, spaced, str);
 			if	((str[i] == '>' || str[i] == '<') && (str[i + 1] != ' '))
 				addspace(&i, &j, spaced, str);

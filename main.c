@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 17:33:26 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/09/13 15:54:39 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/09/14 15:37:01 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,19 @@ int	checknotoken(char *str)
 	{
 		if (str[i] == '\\' || str[i] == ';' || str[i] == '!')
 			return (1);
+		if (str[i] == '|' && str[i + 1] == '|')
+			return(1);
+		if ((str[i] == '>' && str[i + 1] == '<') || (str[i] == '<' && str[i + 1] == '>'))
+			return(1);
+		if (str[i] == '>' && str[i + 1] == '>' && (str[i + 2] == '>' || str[i + 2] == '<'))
+			return (1);
+		if (str[i] == '<' && str[i + 1] == '<' && (str[i + 2] == '>' || str[i + 2] == '<'))
+			return (1);
 		i++;
 	}
 	return (0);
 }
-
+//check si la ligne n'as pas d'erreurs de syntaxe/de mauvais symbole
 int	checkline(t_mini *mini)
 {
 	char *str;
@@ -87,7 +95,7 @@ int	main(int argc, char **argv, char **envp)
 			if (checkline(&mini))
 			{
 				mini = parse(&mini);
-				printcmds(mini.cmds[0]->cmd);
+				//printcmds(mini.cmds[0]->cmd);
 				cleanleak(&mini);
 			}
 		}
