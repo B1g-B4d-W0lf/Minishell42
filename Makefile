@@ -2,7 +2,9 @@ NAME = minishell
 SRC = main.c \
 envp.c \
 parsing.c \
-free.c
+free.c \
+expand.c \
+parse_utils.c
 LIBFT = libft/libft.a
 HEADERFILES = -I minishell.h 
 OBJFILES = $(SRC:.c=.o)

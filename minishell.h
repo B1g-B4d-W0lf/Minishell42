@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 17:31:41 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/09/11 14:30:31 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/09/12 18:01:01 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,13 @@ typedef struct s_mini
 
 //parsing.c
 t_mini	parse(t_mini *mini);
+
+//parse_utils.c
 int		symbolcount(char *str);
 char	*spaceit(char *str);
+void	addspace(int *i, int *j, char *spaced, char *str);
+char	findtoken(char *str);
+int		ispipe(char *str);
 
 //envp.c
 char	**findpath(char **envp);
@@ -46,5 +51,8 @@ char	**findpath(char **envp);
 //free.c
 void	cleanleak(t_mini *mini);
 void	freedoubletab(char **tab);
+
+//expand.c
+char **expanding(char **str);
 
 #endif

@@ -6,12 +6,12 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 17:33:26 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/09/11 17:47:02 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/09/13 15:54:39 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+//affiche le prompt
 char	*display(void)
 {
 	char	*input;
@@ -29,7 +29,7 @@ void	ft_sighandler(int sig)
 		signal(SIGINT, ft_sighandler);
 	}
 }
-
+//symboles pas pris en charge
 int	checknotoken(char *str)
 {
 	int	i;
@@ -56,6 +56,17 @@ int	checkline(t_mini *mini)
 	}
 	return (1);
 }
+void	printcmds(char **cmd)
+{
+	int	i;
+
+	i = 0;
+	while (cmd[i])
+	{
+		ft_printf("%s\n", cmd[i]);
+		i++;
+	}
+}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -76,7 +87,7 @@ int	main(int argc, char **argv, char **envp)
 			if (checkline(&mini))
 			{
 				mini = parse(&mini);
-				printf("%s\n", mini.cmds[0]->cmd[0]);
+				printcmds(mini.cmds[0]->cmd);
 				cleanleak(&mini);
 			}
 		}
