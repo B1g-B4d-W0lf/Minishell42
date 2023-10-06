@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 16:34:51 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/09/14 18:46:50 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/09/25 16:39:47 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,11 @@ int	symbolcount(char *str)
 	int	i;
 	int	count;
 
-	i = 0;
+	i = 1;
 	count = 0;
-	while (str[i] /*&& str[i + 1]*/)
+	if ((str[0] == '<' || str[0] == '>') && (str[1] != '<' || str[1] != '>') && str[1] != ' ')
+		count ++;
+	while (str[i])
 	{
 		if ((str[i] == '|' || str[i] == '>' || str[i] == '<') && (str[i - 1] != ' '))
 		{
@@ -34,8 +36,6 @@ int	symbolcount(char *str)
 		else
 			i++;
 	}
-	//if (!str[i + 1])
-		//i++;
 	return (i + count);
 }
 void	addspace(int *i, int *j, char *spaced, char *str)
@@ -53,21 +53,29 @@ char	*spaceit(char *str)
 	int		j;
 	char	*spaced;
 
-	i = 0;
+	i = 1;
 	j = 0;
-	spaced = malloc(symbolcount(str) * sizeof(char) + 1);
+	spaced = malloc((symbolcount(str) + 1) * sizeof(char));
 	if (!spaced)
 		return (NULL);
+	spaced[j] = str[0];
+	j++;
 	while (str[i])
 	{
 		if ((str[i] == '|' || str[i] == '>' || str[i] == '<') &&
-			(str[i - 1] != ' '))
+			str[i - 1] != ' ')
 		{
 			addspace(&i, &j, spaced, str);
 			if (str[i] && str[i] != ' ' && str[i] != '<' && str[i] != '>')
 				addspace(&i, &j, spaced, str);
 			if	(str[i] && (str[i] == '>' || str[i] == '<') && (str[i + 1] != ' '))
-				addspace(&i, &j, spaced, str);
+			{
+				spaced[j] = str[i];
+				j++;
+				spaced[j] = ' ';
+				i++;
+				j++;
+			}
 		}
 		else 
 		{
@@ -78,24 +86,40 @@ char	*spaceit(char *str)
 	}
 	spaced[j] = '\0';
 	return (spaced);
-}
+} 
 //trouver le token pr le renvoyer dans la struct pr exec
-char	findtoken(char *str)
+char	*findtoken(char *str)
 {
-	int	i;
+	int		i;
+	int		j;
+	char 	*tokens;
 
 	i = 0;
+	j = 0;
+	tokens = malloc((ft_strlen(str) + 1) * sizeof (char));
 	while (str[i])
 	{
-		if (str[i] == '<' || str[i] == '>' || str[i] == '$')
+		if (str[i] == '<' || str[i] == '>')
 		{
-			if (str[i + 1] == '<' || str[i + 1] == '>')
-				return (str[i]);//return double redir how?
-			return (str[i]);
+			tokens[j] = str[i];
+			j++;
+			i++;
+			if (str[i] == '<' || str[i] == '>')
+			{
+				tokens[j] = str[i];
+				j++;
+			}
+			tokens[j] = ' ';
+			j++;
 		}
 		i++;
 	}
-	return ('\0');
+	while(j <= i)
+	{
+		tokens[j] = '\0';
+		j++;
+	}
+	return (tokens);
 }
 //bool pr trouver si il y a des pipes dans la line
 int	ispipe(char *str)

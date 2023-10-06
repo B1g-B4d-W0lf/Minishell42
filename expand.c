@@ -6,12 +6,12 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 17:57:15 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/09/14 15:10:42 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/09/15 15:25:54 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-//donne la taille du double tableau (pour le malloc)
+//donne la taille du double tableau
 int	sizeofdoubletab(char **tab)
 {
 	int	i;

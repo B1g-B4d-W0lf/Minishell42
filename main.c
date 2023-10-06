@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 17:33:26 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/09/14 15:37:01 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/09/28 22:00:12 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ int	checknotoken(char *str)
 			return (1);
 		i++;
 	}
+	if (str[i - 1] == '<' || str[i - 1] == '>' || str[i - 1] == '|')
+		return (1);
 	return (0);
 }
 //check si la ligne n'as pas d'erreurs de syntaxe/de mauvais symbole
@@ -64,14 +66,21 @@ int	checkline(t_mini *mini)
 	}
 	return (1);
 }
-void	printcmds(char **cmd)
+void	printcmds(t_mini *mini)
 {
 	int	i;
+	int j;
 
 	i = 0;
-	while (cmd[i])
+	j = 0;
+	while (mini->cmds[i])
 	{
-		ft_printf("%s\n", cmd[i]);
+		while(mini->cmds[i]->cmd[j])
+		{
+			ft_printf("%d :%s\n", j, mini->cmds[i]->cmd[j]);
+			j++;
+		}
+		j = 0;
 		i++;
 	}
 }
@@ -95,7 +104,7 @@ int	main(int argc, char **argv, char **envp)
 			if (checkline(&mini))
 			{
 				mini = parse(&mini);
-				//printcmds(mini.cmds[0]->cmd);
+				printcmds(&mini);
 				cleanleak(&mini);
 			}
 		}

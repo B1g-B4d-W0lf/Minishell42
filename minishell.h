@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 17:31:41 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/09/12 18:01:01 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/09/28 21:54:12 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ typedef struct s_cmd
 {
 	char	**cmd;
 	char	*path;
-	char	token;
+	char	**token;
 	int		nbr;
 }		t_cmd;
 typedef struct s_mini
@@ -37,12 +37,13 @@ typedef struct s_mini
 
 //parsing.c
 t_mini	parse(t_mini *mini);
+int		findchar(char *str, char c);
 
 //parse_utils.c
 int		symbolcount(char *str);
 char	*spaceit(char *str);
 void	addspace(int *i, int *j, char *spaced, char *str);
-char	findtoken(char *str);
+char	*findtoken(char *str);
 int		ispipe(char *str);
 
 //envp.c
@@ -53,6 +54,10 @@ void	cleanleak(t_mini *mini);
 void	freedoubletab(char **tab);
 
 //expand.c
-char **expanding(char **str);
+char	**expanding(char **str);
+int		sizeofdoubletab(char **tab);
+
+//quotes.c
+int insidequotes(char *str, int c);
 
 #endif
