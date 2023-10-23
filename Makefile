@@ -5,7 +5,8 @@ parsing.c \
 free.c \
 expand.c \
 parse_utils.c \
-quotes.c
+quotes.c \
+redir.c
 LIBFT = libft/libft.a
 HEADERFILES = -I minishell.h 
 OBJFILES = $(SRC:.c=.o)

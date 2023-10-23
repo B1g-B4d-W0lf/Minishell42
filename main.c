@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 17:33:26 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/09/28 22:00:12 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/10/20 21:26:45 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ int	checknotoken(char *str)
 			return(1);
 		if ((str[i] == '>' && str[i + 1] == '<') || (str[i] == '<' && str[i + 1] == '>'))
 			return(1);
-		if (str[i] == '>' && str[i + 1] == '>' && (str[i + 2] == '>' || str[i + 2] == '<'))
+		if (str[i] == '<' && str[i + 1] == '>' && (str[i + 2] == '>' || str[i + 2] == '<'))
 			return (1);
-		if (str[i] == '<' && str[i + 1] == '<' && (str[i + 2] == '>' || str[i + 2] == '<'))
+		if (str[i] == '>' && str[i + 1] == '<' && (str[i + 2] == '>' || str[i + 2] == '<'))
 			return (1);
 		i++;
 	}
@@ -77,7 +77,43 @@ void	printcmds(t_mini *mini)
 	{
 		while(mini->cmds[i]->cmd[j])
 		{
-			ft_printf("%d :%s\n", j, mini->cmds[i]->cmd[j]);
+			ft_printf("cmd %d :%s\n", j, mini->cmds[i]->cmd[j]);
+			j++;
+		}
+		j = 0;
+		i++;
+	}
+	i = 0;
+	j = 0;
+	while (mini->cmds[i])
+	{
+		while(mini->cmds[i]->infile[j])
+		{
+			ft_printf("infile %d :%s\n", j, mini->cmds[i]->infile[j]);
+			j++;
+		}
+		j = 0;
+		i++;
+	}
+	i = 0;
+	j = 0;
+	while (mini->cmds[i])
+	{
+		while(mini->cmds[i]->outfile[j])
+		{
+			ft_printf("outfile %d :%s\n", j, mini->cmds[i]->outfile[j]);
+			j++;
+		}
+		j = 0;
+		i++;
+	}
+	i = 0;
+	j = 0;
+	while (mini->cmds[i])
+	{
+		while(mini->cmds[i]->redirtype[j])
+		{
+			ft_printf("tab %d :%d\n", j, mini->cmds[i]->redirtype[j]);
 			j++;
 		}
 		j = 0;

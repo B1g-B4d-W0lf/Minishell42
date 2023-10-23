@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:44:06 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/09/28 22:03:33 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/10/21 23:24:57 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,79 @@ int	findchar(char *str, char c)
 	}
 	return (0);
 }
+int countcmd(char **str)
+{
+	int	i;
+	int	j;
+	int	count;
+	
+	i = 0;
+	j = 0;
+	count = 0;
+	while (str[i])
+	{
+		if (str[i][j] != '<' && str[i][j] != '>' 
+		&& str[i + 1][j] != '<' && str[i + 1][j] != '>')
+		{
+			while (str[i][j] != '<' && str[i][j] != '>')
+			{
+				count++;
+				i++;
+			}
+		}
+		i++;
+	}
+	return (count);
+}
+char **findcmd(char **str)
+{
+	int		i;
+	int		j;
+	int		k;
+	char	**cmd;
+	
+	i = 0;
+	j = 0;
+	k = 0;
+	cmd = malloc((countcmd(str) + 1) * sizeof(char *));
+	if (!cmd)
+		return(NULL);
+	while (str[i])
+	{
+		if (str[i][j] != '<' && str[i][j] != '>' 
+		&& str[i + 1][j] != '<' && str[i + 1][j] != '>')
+		{
+			while (str[i][j] != '<' && str[i][j] != '>')
+			{
+				cmd[k] = str[i];
+				k++;
+				i++;
+			}
+		}
+		i++;
+	}
+	return (cmd);
+}
+
 //remplir la struct tmtc
-t_cmd	*fillcmd(char *str, int nbr)
+t_cmd	*fillcmd(char *str, int nbr, char **paths)
 {
 	t_cmd	*cmd;
-	char	*temp;
+	char	**line;
 	
-	temp = findtoken(str);
 	cmd = malloc(sizeof (t_cmd));
 	if (!cmd)
 		return (NULL);
-	cmd->token = ft_split(temp, ' ');
-	free(temp);
-	cmd->cmd = expanding(ft_split(str, ' '));
+	line = expanding(ft_split(str, ' '));
+	cmd->infile = sortfiles(line, '<');
+	cmd->outfile = sortfiles(line, '>');
+	cmd->cmd = line;
 	cmd->nbr = nbr;
-	cmd->path = NULL;
+	cmd->redir = countredir(line);
+	cmd->redirtype = sortredir(line);
+	cmd->redin = countfiles(line, '<');
+	cmd->redout = countfiles(line, '>');
+	cmd->path = sendpath(line[0], paths);
 	return (cmd);
 }
 //separer et stocker les infos de la ligne dans la struct
@@ -53,12 +111,10 @@ t_mini	parse(t_mini *mini)
 	
 	spaced = spaceit(mini->input);
 	cmd = NULL;
-	if (insidequotes(spaced, 5))
-		ft_printf("oui c'est entre quotes ?????\n");
 	if (ispipe(spaced) == 0)
 	{
 		cmd = malloc(sizeof (t_cmd) * 2);
-		*cmd = fillcmd(spaced, nbr);
+		*cmd = fillcmd(spaced, nbr, mini->paths);
 		mini->cmds = cmd;
 		mini->cmds[1] = NULL;
 	}
@@ -68,7 +124,7 @@ t_mini	parse(t_mini *mini)
 		piped = ft_split(spaced, '|');
 		while (piped[i])
 		{	
-			cmd[nbr] = fillcmd(piped[i], nbr);
+			cmd[nbr] = fillcmd(piped[i], nbr, mini->paths);
 			nbr++;
 			i++;
 		}
@@ -79,3 +135,4 @@ t_mini	parse(t_mini *mini)
 	free(spaced);
 	return (*mini);
 }
+

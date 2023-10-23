@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 17:57:15 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/09/15 15:25:54 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/10/19 21:28:55 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,24 @@ char **expanding(char **str)
 {
 	int		i;
 	int		j;
+	int		*pos;
 	char 	**temp;
 
 	i = 0;
 	j = 0;
 	if (!checkdollar(str))
 		return (str);
+	pos = malloc(2 * sizeof(int));
 	temp = malloc((sizeofdoubletab(str) + 1) * sizeof (char *));	
 	while (str[i])
 	{
 		if (str[i][0] == '$')
-			str[i] = seeknreplace(str[i]);
+		{
+			pos[0] = i;
+			pos[1] = 0;
+			if (insidequotes(str, pos) == 2 || insidequotes(str, pos) == 0)
+				str[i] = seeknreplace(str[i]);
+		}
 		if (str[i] != NULL)
 		{
 			temp[j] = str[i];
@@ -79,6 +86,7 @@ char **expanding(char **str)
 		i++;
 	}
 	free(str);
+	free(pos);
 	while (j != i)
 	{
 		temp[j] = NULL;
