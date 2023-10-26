@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 16:34:51 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/10/19 21:37:44 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/10/26 17:13:24 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,13 @@ void execspaceit(int *i, int *j, char *spaced, char *str)
 			*i = *i + 1;
 			*j = *j + 1;
 		}
+	}
+	else if ((str[*i] == '|' || str[*i] == '>' || str[*i] == '<'
+	|| str[*i] == '\"' || str[*i] == '\'') && str[*i + 1] != ' ' && str[*i + 1] != '<'
+	&& str[*i + 1] != '>')
+	{
+		*i = *i + 1;
+		addspace(i, j, spaced, str);
 	}
 	else 
 	{

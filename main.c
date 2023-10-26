@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 17:33:26 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/10/20 21:26:45 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/10/26 17:42:17 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,25 +127,26 @@ int	main(int argc, char **argv, char **envp)
 	
 	(void)argc;
 	(void)argv;
-	mini.paths = findpath(envp);
+	//mini.paths = findpath(envp);
 	mini.exit = 0;
 	mini.input = NULL;
 	while (mini.exit == 0)
 	{
 		//signal(SIGINT, ft_sighandler);
 		mini.input = display();
+		if (!ft_strncmp(mini.input, "exit", 4))
+			break ;
 		if (mini.input != NULL && *mini.input != '\0')
 		{
 			add_history(mini.input);
 			if (checkline(&mini))
 			{
-				mini = parse(&mini);
+				mini = parse(&mini, envp);
 				printcmds(&mini);
 				cleanleak(&mini);
 			}
 		}
-		if (!ft_strncmp(mini.input, "exit", 4))
-			mini.exit = 1;
+
 	}
-	freedoubletab(mini.paths);
+	//freedoubletab(mini.paths);
 }

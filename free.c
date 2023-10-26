@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 17:04:36 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/10/20 21:09:37 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/10/25 17:47:15 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	cleanleak(t_mini *mini)
 			free(mini->cmds[i]);
 			i++;
 		}
+		freedoubletab(mini->paths);
 		free(mini->cmds);
 	}
 }

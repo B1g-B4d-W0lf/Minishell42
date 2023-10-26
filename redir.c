@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 18:48:09 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/10/20 21:36:45 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/10/26 16:09:16 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char **sortfiles(char **str, char c)
 		if(str[i][j] == c )
 		{
 			i++;
-			files[k] = str[i];
+			files[k] = ft_strdup(str[i]);
 			k++;
 		}
 		i++;

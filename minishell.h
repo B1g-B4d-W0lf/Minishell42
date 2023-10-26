@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 17:31:41 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/10/21 23:12:34 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/10/26 18:45:05 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct s_cmd
 	char	*path;
 	char	**infile;
 	char	**outfile;
+	char	**quote;
 	int		redir;
 	int		*redirtype;
 	int		redin;
@@ -41,7 +42,7 @@ typedef struct s_mini
 //main.c
 
 //parsing.c
-t_mini	parse(t_mini *mini);
+t_mini	parse(t_mini *mini, char **envp);
 int		findchar(char *str, char c);
 
 //parse_utils.c
@@ -50,25 +51,28 @@ char	*spaceit(char *str);
 void	addspace(int *i, int *j, char *spaced, char *str);
 int		ispipe(char *str);
 
-//envp.c
+//envp.c : gestion des paths
 char	**findpath(char **envp);
 char	*sendpath(char *str, char **paths);
+char	*ft_sup_join(char *s1, char c, char *s2);
 
-//free.c
+//free.c : free les malloc
 void	cleanleak(t_mini *mini);
 void	freedoubletab(char **tab);
 
-//expand.c
+//expand.c : gestion expand
 char	**expanding(char **str);
 int		sizeofdoubletab(char **tab);
 
-//quotes.c
-int 	insidequotes(char **str, int *pos);
+//quotes.c : gestion des quotes
+int 	insidequotes(char *str, int pos);
 
-//redir.c
+//redir.c :gestion outfile et infile
 char 	**sortfiles(char **str, char c);
 int		countredir(char **str);
 int		countfiles(char **str, char c);
 int		*sortredir(char **str);
 
+//splitjoin.c
+char	*spaceitbis(char *str);
 #endif

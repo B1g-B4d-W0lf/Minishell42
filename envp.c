@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:45:34 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/10/21 23:22:30 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/10/25 18:22:34 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,53 +16,56 @@ char	**findpath(char **envp)
 {
 	int		i;
 	char	**paths;
+	char	*dup;
 
 	i = 0;
 	while (envp && envp[i])
 	{
-		if (!ft_strncmp("PATH", envp[i], 4))
+		if (!ft_strncmp("PATH=", envp[i], 5))
 		{
-			paths = ft_split(envp[i] + 5, ':');
+			dup = ft_strdup(envp[i]);
+			paths = ft_split(dup + 5, ':');
+			free(dup);
 			return (paths);
 		}
 		i++;
 	}
 	return (NULL);
 }
-char	*whilenorm(char *str, char *s2, int *tab)
+char	*whilenorm(char *str, char *s2, int i, int j)
 {
-	while (s2[tab[3]])
+	while (s2[j])
 	{
-		str[tab[2] + tab[3]] = s2[tab[3]];
-		tab[3]++;
+		str[i + j] = s2[j];
+		j++;
 	}
-	str[tab[2] + tab[3]] = '\0';
+	str[i + j] = '\0';
 	return (str);
 }
 
 char	*ft_sup_join(char *s1, char c, char *s2)
 {
 	char	*str;
-	int		tab[5];
+	int		i;
+	int		j;
 
 	if (!s1 || !s2)
 		return (0);
-	tab[0] = ft_strlen((char *) s1);
-	tab[1] = ft_strlen((char *) s2);
-	str = malloc(((tab[0] + tab[1]) + 2) * sizeof (char));
+	i = ft_strlen(s1);
+	j = ft_strlen(s2);
+	str = malloc(((i + j) + 2) * sizeof (char));
 	if (str == NULL)
 		return (NULL);
-	tab[2] = 0;
-	tab[3] = 0;
-	while (s1[tab[2]])
+	i = 0;
+	j = 0;
+	while (s1[i])
 	{
-		str[tab[2]] = s1[tab[2]];
-		tab[2]++;
+		str[i] = s1[i];
+		i++;
 	}
-	str[tab[2]] = c;
-	tab[2]++;
-	str = whilenorm(str, s2, tab);
-	free(s1);
+	str[i] = c;
+	i++;
+	str = whilenorm(str, s2, i, j);
 	return (str);
 }
 
@@ -70,16 +73,22 @@ char *sendpath(char *str, char **paths)
 {
 	int		i;
 	char	*pathtest;
+	char	*dup;
 	
 	i = 0;
 	pathtest = NULL;
+	if (findchar(str, '/'))
+	{
+		dup = ft_strdup(str);
+		return (dup);
+	}
 	while(paths[i])
 	{
 		pathtest = ft_sup_join(paths[i], '/', str);
 		if (access(pathtest, F_OK) == 0)
 			return (pathtest);
+		free(pathtest);
 		i++;
 	}
-	free(pathtest);
 	return (NULL);
 }
