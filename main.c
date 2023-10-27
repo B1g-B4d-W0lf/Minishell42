@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 17:33:26 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/10/26 17:42:17 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/10/27 19:19:44 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,18 @@ void	printcmds(t_mini *mini)
 		while(mini->cmds[i]->redirtype[j])
 		{
 			ft_printf("tab %d :%d\n", j, mini->cmds[i]->redirtype[j]);
+			j++;
+		}
+		j = 0;
+		i++;
+	}
+	i = 0;
+	j = 0;
+	while (mini->cmds[i])
+	{
+		while(mini->cmds[i]->quote[j])
+		{
+			ft_printf("quote %d :%d\n", j, mini->cmds[i]->quote[j]);
 			j++;
 		}
 		j = 0;

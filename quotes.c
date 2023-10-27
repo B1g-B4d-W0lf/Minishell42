@@ -6,13 +6,13 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:19:41 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/10/26 19:21:48 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/10/27 20:37:25 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*int	countquotes(char *str)
+int	countquotes(char *str)
 {
 	int	i;
 	int	count;
@@ -28,7 +28,7 @@
 	return (count);
 }
 
-int	comparedoublepos(int *pos, int *firstquote, int *secondquote)
+/*int	comparedoublepos(int *pos, int *firstquote, int *secondquote)
 {
 	if (pos[0] >=  firstquote[0])
 	{
@@ -130,13 +130,6 @@ int	insidequotes(char *str, int pos)
 	return (0);
 }
 
-char **isinquote(char *str)
-{
-	int		i;
-	char	**tab;
-
-}
-
 int	*quotespos(char *str)
 {
 	int	i;
@@ -154,17 +147,73 @@ int	*quotespos(char *str)
 		{
 			tab[quote] = i;
 			quote++;
-			while((str[i] != '\'' || str[i] != '\"') && str[i])
+			i++;
+			while(str[i] && (str[i] != '\'' && str[i] != '\"'))
 				i++;
 			if (str[i] == '\'' || str[i] == '\"')
 			{
 				tab[quote] = i;
 				quote++;
 			}
+			else if (!str[i])
+				break;
 		}
 		i++;
 	}
 	return (tab);
+}
+char *ft_strduppos(char *src, int start, int end)
+{
+	char	*dest;
+	int		i;
+
+	i = 0;
+	dest = malloc(((end - start) + 2) * sizeof(char));
+	if (dest == NULL)
+		return (NULL);
+	while (src[start] && start <= end)
+	{
+		dest[i] = src[start];
+		i++;
+		start++;
+	}
+	dest[i] = '\0';
+	return (dest);
+}
+
+char **sortquotes(char *str)
+{
+	int		i;
+	int		j;
+	int		k;
+	int		len;
+	char	**tab;
+	int		*pos;
+
+	i = 0;
+	j = 0;
+	k = 1;
+	pos = quotespos(str);
+	if (pos == NULL)
+		return (NULL);
+	len = countquotes(str);
+	tab = malloc ((countquotes(str) + 1 ) * sizeof (char *));
+	if (tab == NULL)
+		return (NULL); 
+	while (i <= len)
+	{
+		if (str[pos[i]] == str[pos[k]])
+		{
+			tab[j] = ft_strduppos(str, pos[i], pos[k]);
+			i = k + 1;
+			k = k + 2;
+			j++;
+		}
+		k++;
+	}
+	free(pos);
+	tab[k] = NULL;
+	return(tab);
 }
 
 /*int insidequotes(char *str, int c)

@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:44:06 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/10/26 18:48:08 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/10/27 19:14:16 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ t_cmd	*fillcmd(char *str, int nbr, char **paths)
 	cmd = malloc(sizeof (t_cmd));
 	if (!cmd)
 		return (NULL);
-	cmd->quote = isinquotes(str);
+	cmd->quote = sortquotes(str);
 	line = ft_split(str, ' ');
 	cmd->infile = sortfiles(line, '<');
 	cmd->outfile = sortfiles(line, '>');
