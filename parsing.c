@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:44:06 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/10/27 19:14:16 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/10/28 17:28:30 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ char **findcmd(char **str)
 		else 
 			break ;
 	}
-	printf("cmd :%s\n", cmd[0]);
 	return (cmd);
 }
 
@@ -102,16 +101,17 @@ t_cmd	*fillcmd(char *str, int nbr, char **paths)
 	if (!cmd)
 		return (NULL);
 	cmd->quote = sortquotes(str);
+	str = spaceit(str);
 	line = ft_split(str, ' ');
 	cmd->infile = sortfiles(line, '<');
 	cmd->outfile = sortfiles(line, '>');
-	cmd->cmd = line;
 	cmd->nbr = nbr;
 	cmd->redir = countredir(line);
 	cmd->redirtype = sortredir(line);
 	cmd->redin = countfiles(line, '<');
 	cmd->redout = countfiles(line, '>');
 	cmd->path = sendpath(line[0], paths);
+	cmd->cmd = findcmd(line);
 	//freedoubletab(line);
 	return (cmd);
 }

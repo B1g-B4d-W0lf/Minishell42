@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 17:31:41 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/10/27 19:09:43 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/10/28 16:47:00 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	**expanding(char **str);
 int		sizeofdoubletab(char **tab);
 
 //quotes.c : gestion des quotes
-int 	insidequotes(char *str, int pos);
+int 	insidequotes(char **str, int *pos);
 char	**sortquotes(char *str);
 
 //redir.c :gestion outfile et infile

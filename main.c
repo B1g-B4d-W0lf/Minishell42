@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 17:33:26 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/10/27 19:19:44 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/10/28 16:21:05 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void	printcmds(t_mini *mini)
 	{
 		while(mini->cmds[i]->quote[j])
 		{
-			ft_printf("quote %d :%d\n", j, mini->cmds[i]->quote[j]);
+			printf("quote %d :%s\n", j, mini->cmds[i]->quote[j]);
 			j++;
 		}
 		j = 0;

@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 17:04:36 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/10/25 17:47:15 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/10/28 17:09:52 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	cleanleak(t_mini *mini)
 				free(mini->cmds[i]->infile);
 			if (mini->cmds[i]->outfile)
 				free(mini->cmds[i]->outfile);
+			if (mini->cmds[i]->quote)
+				freedoubletab(mini->cmds[i]->quote);
 			free(mini->cmds[i]);
 			i++;
 		}

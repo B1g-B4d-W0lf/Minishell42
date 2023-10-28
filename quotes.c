@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:19:41 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/10/27 20:37:25 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/10/28 16:48:51 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	countquotes(char *str)
 	return (count);
 }
 
-/*int	comparedoublepos(int *pos, int *firstquote, int *secondquote)
+int	comparedoublepos(int *pos, int *firstquote, int *secondquote)
 {
 	if (pos[0] >=  firstquote[0])
 	{
@@ -83,8 +83,37 @@ int	afterquotes(char **str, int *firstquote, int *pos)
 		printf("%d, %d\n", pos[0], pos[1]);
 	}
 	return (free(secondquote), 3);
-} */
-int	checkpos(char *str, int firstquote, int pos)
+} 
+
+int	insidequotes(char **str, int *pos)
+{
+	int	i;
+	int	j;
+	int	*firstquote;
+	
+	i = 0;
+	j = 0;
+	firstquote = malloc(2 * sizeof(int));
+	while (str[i])
+	{
+		while (str[i][j])
+		{
+			if (str[i][j] == '\'' || str[i][j] == '\"')
+			{
+				firstquote[0] = i;
+				firstquote[1] = j;
+				j = afterquotes(str, firstquote, pos);
+				return (free(firstquote), j);
+			}
+			j++;
+		}
+		i++;
+		j = 0;	
+	}
+	return (free(firstquote), 0);
+}
+
+/*int	checkpos(char *str, int firstquote, int pos)
 {
 	int	i;
 	int	secondquote;
@@ -128,7 +157,7 @@ int	insidequotes(char *str, int pos)
 		i++;
 	}
 	return (0);
-}
+}*/
 
 int	*quotespos(char *str)
 {
@@ -162,6 +191,7 @@ int	*quotespos(char *str)
 	}
 	return (tab);
 }
+
 char *ft_strduppos(char *src, int start, int end)
 {
 	char	*dest;
@@ -200,19 +230,24 @@ char **sortquotes(char *str)
 	tab = malloc ((countquotes(str) + 1 ) * sizeof (char *));
 	if (tab == NULL)
 		return (NULL); 
-	while (i <= len)
+	while (i < len)
 	{
 		if (str[pos[i]] == str[pos[k]])
 		{
 			tab[j] = ft_strduppos(str, pos[i], pos[k]);
 			i = k + 1;
-			k = k + 2;
+			k++;
 			j++;
 		}
 		k++;
 	}
 	free(pos);
-	tab[k] = NULL;
+	while (j < len)
+	{
+		tab[j] = NULL;
+		j++;
+	}
+	tab[j] = NULL;
 	return(tab);
 }
 
