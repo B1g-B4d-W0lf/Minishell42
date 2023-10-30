@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:44:06 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/10/28 17:28:30 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/10/30 20:49:01 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,15 @@ char **findcmd(char **str)
 	int		i;
 	int		j;
 	int		k;
+	int		*pos;
 	char	**cmd;
 	
 	i = 0;
 	j = 0;
 	k = 0;
+	pos = malloc(2 * sizeof(int));
 	cmd = malloc((countcmd(str) + 1) * sizeof(char *));
-	if (!cmd)
+	if (!cmd || !pos)
 		return(NULL);
 	while (str[i])
 	{
@@ -73,9 +75,11 @@ char **findcmd(char **str)
 		{
 			if ((!str[i + 1]) || (str[i + 1] && str[i + 1][j] != '<'))
 			{
-				if (str[i - 1] && (str[i - 1][j] == '<' || str[i - 1][j] == '>'))
+				if (str[i - 1] && (str[i - 1][j] == '<' || str[i - 1][j] == '>')
+				&& insidequotes(str, pos) == 0)
 					i++;
-				while (str[i] && str[i][j] != '<' && str[i][j] != '>')
+				while (str[i] && str[i][j] != '<' && str[i][j] != '>' 
+					&& insidequotes(str, pos) == 0)
 				{
 					cmd[k] = ft_strdup(str[i]);
 					k++;
@@ -88,6 +92,7 @@ char **findcmd(char **str)
 		else 
 			break ;
 	}
+	free(pos);
 	return (cmd);
 }
 
@@ -112,7 +117,8 @@ t_cmd	*fillcmd(char *str, int nbr, char **paths)
 	cmd->redout = countfiles(line, '>');
 	cmd->path = sendpath(line[0], paths);
 	cmd->cmd = findcmd(line);
-	//freedoubletab(line);
+	freedoubletab(line);
+	free(str);
 	return (cmd);
 }
 //separer et stocker les infos de la ligne dans la struct

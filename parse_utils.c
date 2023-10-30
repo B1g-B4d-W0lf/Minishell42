@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 16:34:51 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/10/28 17:25:41 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/10/30 17:25:06 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ void execspaceit(int *i, int *j, char *spaced, char *str)
 		addspace(i, j, spaced, str);
 		if (str[*i] && str[*i] != '<' && str[*i] != '>')
 			addspace(i, j, spaced, str);
-		if	(str[*i] && (str[*i] == '>' || str[*i] == '<'))
+		if	(str[*i] && (str[*i] == '>' || str[*i] == '<') 
+			&& (str[*i - 1] == '<' || str[*i - 1] == '>'))
 		{
 			spaced[*j] = str[*i];
 			*j = *j + 1;
@@ -96,7 +97,7 @@ char	*spaceit(char *str)
 	j++;
 	if (((str[0] == '<' || str[0] == '>') || (str[0] == '\'' || str[0] == '\"')))
 	{
-		if (str[1] == '<' || str[1] == '>')
+		if ((str[0] == '<' || str[0] == '>') && (str[1] == '<' || str[1] == '>'))
 		{
 			spaced[j] = str[1];
 			j++;
