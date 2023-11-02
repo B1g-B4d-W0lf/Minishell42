@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:19:41 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/01 18:57:09 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/02 18:31:58 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,12 +124,7 @@ char **sortquotes(char *str)
 		k++;
 	}
 	free(pos);
-	while (j < len)
-	{
-		tab[j] = NULL;
-		j++;
-	}
-	tab[j] = NULL;
+	fillnull(tab, &j, len);
 	return(tab);
 }
 

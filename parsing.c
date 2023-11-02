@@ -6,32 +6,50 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:44:06 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/02 16:51:57 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/02 18:52:23 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-//trouver si une string contient un char donné
 
-
-char **findcmd(char **str, char **quotetab)
+char **execfindcmdnoredir(char **str, char **quotetab, char **cmd, int *pos)
 {
-	int		i;
-	int		j;
-	int		k;
-	int		*pos;
-	char	**cmd;
+	int	i;
+	int	j;
+	int	k;
 	
-	i = 1;
+	i = 0;
 	j = 0;
 	k = 0;
-	pos = malloc(2 * sizeof(int));
-	cmd = malloc((doubletabsize(str) + 1) * sizeof(char *));
-	if (!cmd || !pos)
-		return(NULL);
-	pos[1] = 0;
-	if (!str[1])
-		cmd[k] = str[0]; 
+	while (str[i])
+	{
+		printf("pass\n");
+		if (str[i][0] == '\"' || str[i][0] == '\'')
+			i++;
+		pos[0] = i;
+		if (str[i] && insidequotes(str, pos) == 0)
+			dupcmd(cmd, str, &k, &i);
+		else if (str[i] && insidequotes(str, pos) != 0)
+		{
+			dupcmd(cmd, quotetab, &k, &j);
+			pos[0] = i++;
+			while (str[i] && insidequotes(str, pos) != 0)
+				pos[0] = i++;
+		}
+	}
+	fillnull(cmd, &k, doubletabsize(str));
+	return (cmd);
+}
+
+char **execfindcmdredir(char **str, char **quotetab, char **cmd, int *pos)
+{
+	int	i;
+	int	j;
+	int	k;
+	
+	i = 0;
+	j = 0;
+	k = 0;
 	while (str[i])
 	{
 		pos[0] = i;
@@ -50,10 +68,10 @@ char **findcmd(char **str, char **quotetab)
 					if (str[i][0] == '\"' || str[i][0] == '\'')
 						i++;
 					pos[0] = i;
-					if (insidequotes(str, pos) == 0 
+					if (str[i] && insidequotes(str, pos) == 0
 						&& str[i][0] != '<' && str[i][0] != '>')
 						dupcmd(cmd, str, &k, &i);
-					else if (insidequotes(str, pos) != 0)
+					else if (str[i] && insidequotes(str, pos) != 0)
 					{
 						dupcmd(cmd, quotetab, &k, &j);
 						pos[0] = i++;
@@ -70,6 +88,23 @@ char **findcmd(char **str, char **quotetab)
 		i++;
 	}
 	fillnull(cmd, &k, doubletabsize(str));
+	return (cmd);
+}
+
+char **findcmd(char **str, char **quotetab, char *spaced)
+{
+	int		*pos;
+	char	**cmd;
+	
+	pos = malloc(2 * sizeof(int));
+	cmd = malloc((doubletabsize(str) + 1) * sizeof(char *));
+	if (!cmd || !pos)
+		return(NULL);
+	pos[1] = 0;
+	if (!findchar(spaced, '<') && !findchar(spaced, '>'))
+		cmd = execfindcmdnoredir(str, quotetab, cmd, pos);
+	else if (findchar(spaced, '<') || findchar(spaced, '>'))
+		cmd = execfindcmdredir(str, quotetab, cmd, pos);
 	free(pos);
 	return (cmd);
 }
@@ -93,7 +128,7 @@ t_cmd	*fillcmd(char *str, int nbr, char **paths)
 	cmd->redin = countfiles(line, '<');
 	cmd->redout = countfiles(line, '>');
 	cmd->path = sendpath(line[0], paths);
-	cmd->cmd = findcmd(line, cmd->quote);
+	cmd->cmd = findcmd(line, cmd->quote, str);
 	freedoubletab(line);
 	free(str);
 	return (cmd);
