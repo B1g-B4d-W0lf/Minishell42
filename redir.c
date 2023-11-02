@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 18:48:09 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/10/30 18:57:22 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/01 18:55:01 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ char **sortfiles(char **str, char c)
 		pos[1] = j;
 		if(str[i][j] == c && insidequotes(str, pos) == 0)
 		{
-			printf("ça rentre\n");
 			i++;
 			files[k] = ft_strdup(str[i]);
 			k++;

@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 17:31:41 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/10/30 19:00:45 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/02 16:53:39 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ typedef struct s_mini
 
 //parsing.c
 t_mini	parse(t_mini *mini, char **envp);
-int		findchar(char *str, char c);
 
 //parse_utils.c
 int		symbolcount(char *str);
@@ -81,4 +80,11 @@ int		*sortredir(char **str);
 
 //splitjoin.c
 char	*spaceitbis(char *str);
+
+//tools.c
+void	dupcmd(char **cmd, char **src, int *i, int *j);
+void	fillnull(char **str, int *i, int len);
+int		doubletabsize(char **str);
+int		findchar(char *str, char c);
+
 #endif

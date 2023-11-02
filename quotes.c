@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:19:41 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/10/30 19:20:52 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/01 18:57:09 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,11 @@ char *ft_strduppos(char *src, int start, int end)
 	int		i;
 
 	i = 0;
+	start++;
 	dest = malloc(((end - start) + 2) * sizeof(char));
 	if (dest == NULL)
 		return (NULL);
-	while (src[start] && start <= end)
+	while (src[start] && start < end)
 	{
 		dest[i] = src[start];
 		i++;
