@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 18:48:09 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/01 18:55:01 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/03 18:48:21 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,50 +15,36 @@
 int	countredir(char **str)
 {
 	int	i;
-	int	j;
-	int	*pos;
+	int	pos;
 	int	count;
 
 	i = 0;
-	j = 0;
 	count = 0;
-	pos = malloc(2 * sizeof(int));
-	if (pos == NULL)
-		return(0);
 	while (str[i])
 	{
-		pos[0] = i;
-		pos[1] = j;
-		if ((str[i][j] == '<' || str[i][j] == '>') && insidequotes(str, pos) == 0)
+		pos = i;
+		if ((str[i][0] == '<' || str[i][0] == '>') && insidequotes(str, pos) == 0)
 			count++;
 		i++;
 	}
-	free(pos);
 	return (count);
 }
 
 int countfiles(char **str, char c)
 {
 	int	i;
-	int	j;
-	int	*pos;
+	int	pos;
 	int	count;
 	
 	i = 0;
-	j = 0;
 	count = 0;
-	pos = malloc(2 * sizeof(int));
-	if (pos == NULL)
-		return(0);
 	while(str[i])
 	{
-		pos[0] = i;
-		pos[1] = j;
-		if (str[i][j] == c && insidequotes(str, pos) == 0)
+		pos = i;
+		if (str[i][0] == c && insidequotes(str, pos) == 0)
 			count++;
 		i++;
 	}
-	free(pos);
 	return (count);
 }
 
@@ -66,33 +52,26 @@ char **sortfiles(char **str, char c)
 {
 	int		i;
 	int		j;
-	int		k;
-	int		*pos;
+	int		pos;
 	char	**files;
 
 	i = 0;
 	j = 0;
-	k = 0;
-	pos = malloc(2 * sizeof(int));
-	if (pos== NULL)
-		return(NULL);
 	files = malloc((countfiles(str, c) + 1) * sizeof(char *));
 	if (files == NULL)
 		return (NULL);
 	while (str[i])
 	{
-		pos[0] = i;
-		pos[1] = j;
-		if(str[i][j] == c && insidequotes(str, pos) == 0)
+		pos = i;
+		if(str[i][0] == c && insidequotes(str, pos) == 0)
 		{
 			i++;
-			files[k] = ft_strdup(str[i]);
-			k++;
+			files[j] = ft_strdup(str[i]);
+			j++;
 		}
 		i++;
 	}
-	free(pos);
-	files[k] = NULL;
+	files[j] = NULL;
 	return (files);
 }
 
@@ -100,21 +79,17 @@ int	*sortredir(char **str)
 {
 	int	i;
 	int	j;
-	int	*pos;
+	int	pos;
 	int	*tab;
 
 	i = 0;
-	pos = malloc(2 * sizeof(int));
-	if (pos == NULL)
-		return (NULL);
 	j = -1;
 	tab = malloc(countredir(str) * sizeof(int));
 	if (tab == NULL)
 		return (NULL);
 	while (str[i])
 	{
-		pos[0] = i;
-		pos[1] = 0;
+		pos = i;
 		if (insidequotes(str, pos) == 0)
 		{
 			if (str[i][0] == '<' && !str[i][1])
@@ -128,6 +103,5 @@ int	*sortredir(char **str)
 		}
 		i++;
 	}
-	free(pos);
 	return (tab);
 }

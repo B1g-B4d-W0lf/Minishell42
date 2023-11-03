@@ -6,13 +6,13 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:44:06 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/02 18:52:23 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/03 19:06:28 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char **execfindcmdnoredir(char **str, char **quotetab, char **cmd, int *pos)
+char **execfindcmdnoredir(char **str, char **quotetab, char **cmd, int pos)
 {
 	int	i;
 	int	j;
@@ -23,25 +23,25 @@ char **execfindcmdnoredir(char **str, char **quotetab, char **cmd, int *pos)
 	k = 0;
 	while (str[i])
 	{
-		printf("pass\n");
-		if (str[i][0] == '\"' || str[i][0] == '\'')
+		while (str[i] && (str[i][0] == '\"' || str[i][0] == '\''))
 			i++;
-		pos[0] = i;
+		pos = i;
 		if (str[i] && insidequotes(str, pos) == 0)
 			dupcmd(cmd, str, &k, &i);
 		else if (str[i] && insidequotes(str, pos) != 0)
 		{
 			dupcmd(cmd, quotetab, &k, &j);
-			pos[0] = i++;
-			while (str[i] && insidequotes(str, pos) != 0)
-				pos[0] = i++;
+			i++;
+			pos = i;
+			while (str[i] && str[i][0] != '\"' && str[i][0] != '\'')
+				i++;
 		}
 	}
 	fillnull(cmd, &k, doubletabsize(str));
 	return (cmd);
 }
 
-char **execfindcmdredir(char **str, char **quotetab, char **cmd, int *pos)
+char **execfindcmdredir(char **str, char **quotetab, char **cmd, int pos)
 {
 	int	i;
 	int	j;
@@ -52,36 +52,32 @@ char **execfindcmdredir(char **str, char **quotetab, char **cmd, int *pos)
 	k = 0;
 	while (str[i])
 	{
-		pos[0] = i;
+		pos = i;
 		if ((str[i][0] != '<' && str[i][0] != '>') || insidequotes(str, pos) != 0)
 		{
-			pos[0] = i + 1;
+			pos = i + 1;
 			if ((((!str[i + 1]) || (str[i + 1])) && str[i + 1][0] != '<')
 				|| insidequotes(str, pos) != 0)
 			{
-				pos[0] = i - 1;
+				pos = i - 1;
 				if (str[i - 1] && (str[i - 1][0] == '<' || str[i - 1][0] == '>')
 				&& insidequotes(str, pos) == 0)
 					i++;
 				while (str[i] && str[i][0] != '<' && str[i][0] != '>')
 				{
-					if (str[i][0] == '\"' || str[i][0] == '\'')
+					while (str[i] && (str[i][0] == '\"' || str[i][0] == '\''))
 						i++;
-					pos[0] = i;
-					if (str[i] && insidequotes(str, pos) == 0
-						&& str[i][0] != '<' && str[i][0] != '>')
+					pos = i;
+					if (str[i] && insidequotes(str, pos) == 0)
 						dupcmd(cmd, str, &k, &i);
 					else if (str[i] && insidequotes(str, pos) != 0)
 					{
 						dupcmd(cmd, quotetab, &k, &j);
-						pos[0] = i++;
-						while (str[i] && insidequotes(str, pos) != 0)
-						{
-							pos[0] = i;
+						i++;
+						pos = i;
+						while (str[i] && str[i][0] != '\"' && str[i][0] != '\'')
 							i++;
-						}
 					}
-
 				}
 			}
 		}
@@ -93,19 +89,17 @@ char **execfindcmdredir(char **str, char **quotetab, char **cmd, int *pos)
 
 char **findcmd(char **str, char **quotetab, char *spaced)
 {
-	int		*pos;
+	int		pos;
 	char	**cmd;
 	
-	pos = malloc(2 * sizeof(int));
+	pos = 0;
 	cmd = malloc((doubletabsize(str) + 1) * sizeof(char *));
-	if (!cmd || !pos)
+	if (!cmd)
 		return(NULL);
-	pos[1] = 0;
 	if (!findchar(spaced, '<') && !findchar(spaced, '>'))
 		cmd = execfindcmdnoredir(str, quotetab, cmd, pos);
 	else if (findchar(spaced, '<') || findchar(spaced, '>'))
 		cmd = execfindcmdredir(str, quotetab, cmd, pos);
-	free(pos);
 	return (cmd);
 }
 //remplir la struct tmtc
@@ -166,43 +160,3 @@ t_mini	parse(t_mini *mini, char **envp)
 	}
 	return (*mini);
 }
-
- /*int countcmd(char **str)
-{
-	int	i;
-	int	*pos;
-	int	count;
-	
-	i = 0;
-	count = 0;
-	pos = malloc(2 * sizeof(int));
-	if (pos == NULL)
-		return(0);
-	pos[1] = 0;
-	while (str[i])
-	{
-		if (str[i][0] != '<' && str[i][0] != '>')
-		{
-			if (str[i + 1] && str[i + 1][0] != '<')
-			{
-				if (str[i - 1] && (str[i - 1][0] == '<' || str[i - 1][0] == '>'))
-					i++;
-				while (str[i] && str[i][0] != '<' && str[i][0] != '>')
-				{
-					if (str[i][0] == '\"' || str[i][0] == '\'')
-						i++;
-					pos[0] = i;
-					if (insidequotes(str, pos) != 0)
-						count++;
-					else if (insidequotes(str, pos) == 0)
-						//&& str[i][0] != '<' && str[i][0] != '>')
-						count++;
-					i++;
-				}
-			}
-		}
-		i++;
-	}
-	return (free(pos), count);
-}*/
-

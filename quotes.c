@@ -6,38 +6,33 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:19:41 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/02 18:31:58 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/03 18:37:26 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	insidequotes(char **str, int *pos)
+int	insidequotes(char **str, int pos)
 {
 	int	i;
 	int	j;
-	int	*firstquote;
+	int	firstquote;
 	
 	i = 0;
 	j = 0;
-	firstquote = malloc(2 * sizeof(int));
 	while (str[i])
 	{
-		while (str[i][j])
+		if (str[i][0] == '\'' || str[i][0] == '\"')
 		{
-			if (str[i][j] == '\'' || str[i][j] == '\"')
-			{
-				firstquote[0] = i;
-				firstquote[1] = j;
-				j = afterquotes(str, firstquote, pos);
-				return (free(firstquote), j);
-			}
-			j++;
+			firstquote = i;
+			i++;
+			j = afterquotes(str, firstquote, pos, &i);
+			if (j != 0)
+				return (j);
 		}
 		i++;
-		j = 0;	
 	}
-	return (free(firstquote), 0);
+	return (0);
 }
 
 int	*quotespos(char *str)
