@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:44:06 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/03 19:06:28 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/09 16:45:23 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,11 @@ char **execfindcmdnoredir(char **str, char **quotetab, char **cmd, int pos)
 		{
 			dupcmd(cmd, quotetab, &k, &j);
 			i++;
-			pos = i;
 			while (str[i] && str[i][0] != '\"' && str[i][0] != '\'')
 				i++;
 		}
 	}
-	fillnull(cmd, &k, doubletabsize(str));
+	fillnull(cmd, &k, sizeofdoubletab(str));
 	return (cmd);
 }
 
@@ -56,7 +55,7 @@ char **execfindcmdredir(char **str, char **quotetab, char **cmd, int pos)
 		if ((str[i][0] != '<' && str[i][0] != '>') || insidequotes(str, pos) != 0)
 		{
 			pos = i + 1;
-			if ((((!str[i + 1]) || (str[i + 1])) && str[i + 1][0] != '<')
+			if (((str[i + 1]) && str[i + 1][0] != '<')
 				|| insidequotes(str, pos) != 0)
 			{
 				pos = i - 1;
@@ -74,16 +73,18 @@ char **execfindcmdredir(char **str, char **quotetab, char **cmd, int pos)
 					{
 						dupcmd(cmd, quotetab, &k, &j);
 						i++;
-						pos = i;
 						while (str[i] && str[i][0] != '\"' && str[i][0] != '\'')
 							i++;
 					}
 				}
 			}
 		}
-		i++;
+		if (str[i] && str[i + 1])
+			i++;
+		else 
+			break;
 	}
-	fillnull(cmd, &k, doubletabsize(str));
+	fillnull(cmd, &k, sizeofdoubletab(str));
 	return (cmd);
 }
 
@@ -93,7 +94,7 @@ char **findcmd(char **str, char **quotetab, char *spaced)
 	char	**cmd;
 	
 	pos = 0;
-	cmd = malloc((doubletabsize(str) + 1) * sizeof(char *));
+	cmd = malloc((sizeofdoubletab(str) + 1) * sizeof(char *));
 	if (!cmd)
 		return(NULL);
 	if (!findchar(spaced, '<') && !findchar(spaced, '>'))
@@ -111,6 +112,7 @@ t_cmd	*fillcmd(char *str, int nbr, char **paths)
 	cmd = malloc(sizeof (t_cmd));
 	if (!cmd)
 		return (NULL);
+	str = expanding(str);
 	cmd->quote = sortquotes(str);
 	str = spaceit(str);
 	line = ft_split(str, ' ');
@@ -121,8 +123,9 @@ t_cmd	*fillcmd(char *str, int nbr, char **paths)
 	cmd->redirtype = sortredir(line);
 	cmd->redin = countfiles(line, '<');
 	cmd->redout = countfiles(line, '>');
-	cmd->path = sendpath(line[0], paths);
 	cmd->cmd = findcmd(line, cmd->quote, str);
+	cmd->path = sendpath(cmd->cmd[0], paths);
+	
 	freedoubletab(line);
 	free(str);
 	return (cmd);

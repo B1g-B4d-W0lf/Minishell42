@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:19:41 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/03 18:37:26 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/08 21:49:06 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,56 +123,31 @@ char **sortquotes(char *str)
 	return(tab);
 }
 
-/*int insidequotes(char *str, int c)
+int	checkposstr(char *str, int firstquote, int pos, int *i)
 {
-	int	i;
-	int j;
-	int	quotesnbr;
-	int *pos;
-	
-	pos = quotespos(str);
-	if (pos == NULL)
-		return (0);
-	i = 0;
-	j = 1;
-	quotesnbr = countquotes(str);
-	while (i < quotesnbr && j <= quotesnbr)
-	{
-		while (str[pos[i]] != str[pos[j]] && j <= quotesnbr)
-			j++;
-		if (c > pos[i] && c < pos[j])
-			return (1);
-		i++;
-		j = i + 1;
-	}
-	free (pos);
-	return (0);
-} 
-int	checkpos(char *str, int firstquote, int pos)
-{
-	int	i;
 	int	secondquote;
 
-	i = firstquote;
 	secondquote = 0;
-	while(str[i] && str[i] != str[firstquote])
+	while(str[*i] && str[*i] != str[firstquote])
 	{
-		if (str[i] == str[firstquote])
+		if (str[*i] == str[firstquote])
 			break;
-		i++;
+		*i = *i + 1;
 	}
-	if (str[i] == str[firstquote])
+	if (str[*i] && str[*i] == str[firstquote])
 	{
-		secondquote = i;
+		secondquote = *i;
 		if (pos > firstquote && pos < secondquote && str[firstquote] == '\'')
 			return (1);
-		if (pos > firstquote && pos < secondquote && str[firstquote] == '\"')
+		else if (pos > firstquote && pos < secondquote && str[firstquote] == '\"')
 			return (2);
 	}
-	return (3);
+	else if (!str[*i])
+		return (3);
+	return (0);
 }
 
-int	insidequotes(char *str, int pos)
+int	insidequotesstr(char *str, int pos)
 {
 	int	i;
 	int	j;
@@ -186,10 +161,12 @@ int	insidequotes(char *str, int pos)
 			if (str[i] == '\'' || str[i] == '\"')
 			{
 				firstquote= i;
-				j = checkpos(str, firstquote, pos);
-				return(j);
+				i++;
+				j = checkposstr(str, firstquote, pos, &i);
+				if (j != 0)
+					return (j);
 			}
 		i++;
 	}
-	return (0);
-}*/
+	return (j);
+}

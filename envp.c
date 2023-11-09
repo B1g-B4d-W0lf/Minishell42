@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:45:34 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/10/25 18:22:34 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/09 16:46:26 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ char *sendpath(char *str, char **paths)
 	
 	i = 0;
 	pathtest = NULL;
+	if (str == NULL)
+		return(NULL);
 	if (findchar(str, '/'))
 	{
 		dup = ft_strdup(str);

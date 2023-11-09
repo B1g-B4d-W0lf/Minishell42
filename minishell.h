@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 17:31:41 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/03 18:38:09 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/08 17:16:49 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,13 @@ void	cleanleak(t_mini *mini);
 void	freedoubletab(char **tab);
 
 //expand.c : gestion expand
-char	**expanding(char **str);
-int		sizeofdoubletab(char **tab);
+char	*expanding(char *str);
 
 //quotes.c : gestion des quotes
 int		insidequotes(char **str, int pos);
 char	**sortquotes(char *str);
+char	*ft_strduppos(char *src, int start, int end);
+int		insidequotesstr(char *str, int pos);
 
 //quotes_utils.c
 int		countquotes(char *str);
@@ -83,7 +84,7 @@ char	*spaceitbis(char *str);
 //tools.c
 void	dupcmd(char **cmd, char **src, int *i, int *j);
 void	fillnull(char **str, int *i, int len);
-int		doubletabsize(char **str);
 int		findchar(char *str, char c);
+int		sizeofdoubletab(char **tab);
 
 #endif
