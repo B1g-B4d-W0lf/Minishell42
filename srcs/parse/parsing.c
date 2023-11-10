@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:44:06 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/09 16:45:23 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/10 23:30:01 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,62 +104,59 @@ char **findcmd(char **str, char **quotetab, char *spaced)
 	return (cmd);
 }
 //remplir la struct tmtc
-t_cmd	*fillcmd(char *str, int nbr, char **paths)
+t_cmd	fillcmd(char *str, char **envp, t_cmd *cmd)
 {
-	t_cmd	*cmd;
 	char	**line;
+	char	**quote;
+	char	**paths;
 	
-	cmd = malloc(sizeof (t_cmd));
-	if (!cmd)
-		return (NULL);
-	str = expanding(str);
-	cmd->quote = sortquotes(str);
+	paths = findpath(envp);
+	str = expanding(str, envp);
+	quote = sortquotes(str);
 	str = spaceit(str);
 	line = ft_split(str, ' ');
-	cmd->infile = sortfiles(line, '<');
-	cmd->outfile = sortfiles(line, '>');
-	cmd->nbr = nbr;
+	cmd->input_file = sortfiles(line, '<');
+	cmd->output_file = sortfiles(line, '>');
 	cmd->redir = countredir(line);
-	cmd->redirtype = sortredir(line);
-	cmd->redin = countfiles(line, '<');
-	cmd->redout = countfiles(line, '>');
-	cmd->cmd = findcmd(line, cmd->quote, str);
+	cmd->redir_type = sortredir(line);
+	cmd->redir_in = countfiles(line, '<');
+	cmd->redir_out = countfiles(line, '>');
+	cmd->cmd = findcmd(line, quote, str);
 	cmd->path = sendpath(cmd->cmd[0], paths);
 	
 	freedoubletab(line);
 	free(str);
-	return (cmd);
+	freedoubletab(quote);
+	free(paths);
+	return (*cmd);
 }
 //separer et stocker les infos de la ligne dans la struct
-t_mini	parse(t_mini *mini, char **envp)
+int	parse(t_mini *mini, char *line)
 {
 	char	**piped;
-	t_cmd	**cmd;
 	int		nbr = 0;
 	int		i = 0;
 	
-	cmd = NULL;
-	mini->paths = findpath(envp);
-	if (ispipe(mini->input) == 0)
+	if (ispipe(line) == 0)
 	{
-		cmd = malloc(sizeof (t_cmd) * 2);
-		*cmd = fillcmd(mini->input, nbr, mini->paths);
-		mini->cmds = cmd;
-		mini->cmds[1] = NULL;
+		mini->cmds = malloc(sizeof (t_fill) * 2);
+		mini->cmds[0] = fillcmd(line, mini->envp, &mini->cmds[0]);
+		//mini->cmds[1] = NULL;
+		return(1);
 	}
-	else if (ispipe(mini->input))
+	else if (ispipe(line))
 	{
-		cmd = malloc(sizeof (t_cmd) * (ispipe(mini->input) + 1));
-		piped = ft_split(mini->input, '|');
+		mini->cmds = malloc(sizeof (t_fill) * (ispipe(line) + 1));
+		piped = ft_split(line, '|');
 		while (piped[i])
 		{	
-			cmd[nbr] = fillcmd(piped[i], nbr, mini->paths);
+			mini->cmds[nbr] = fillcmd(piped[i], mini->envp, &mini->cmds[nbr]);
 			nbr++;
 			i++;
 		}
 		freedoubletab(piped);
-		mini->cmds = cmd;
-		mini->cmds[nbr] = NULL;
+		//mini->cmds[nbr] = NULL;
+		return(ispipe(line));
 	}
-	return (*mini);
+	return (-1);
 }

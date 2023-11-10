@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 18:48:09 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/03 18:48:21 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/09 20:44:36 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,12 @@ int	*sortredir(char **str)
 	int	i;
 	int	j;
 	int	pos;
-	int	*tab;
+	int	*tabl;
 
 	i = 0;
 	j = -1;
-	tab = malloc(countredir(str) * sizeof(int));
-	if (tab == NULL)
+	tabl = malloc(countredir(str) * sizeof(int));
+	if (tabl == NULL)
 		return (NULL);
 	while (str[i])
 	{
@@ -93,15 +93,15 @@ int	*sortredir(char **str)
 		if (insidequotes(str, pos) == 0)
 		{
 			if (str[i][0] == '<' && !str[i][1])
-				tab[++j] = 1;
+				tabl[++j] = 1;
 			else if (str[i][0] == '>' && !str[i][1])
-				tab[++j] = 2;
+				tabl[++j] = 2;
 			else if (str[i][0] == '>' && str[i][1])
-				tab[++j] = 3;
+				tabl[++j] = 3;
 			else if (str[i][0] == '<' && str[i][1])
-				tab[++j] = 4;
+				tabl[++j] = 4;
 		}
 		i++;
 	}
-	return (tab);
+	return (tabl);
 }

@@ -6,11 +6,30 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:45:34 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/09 16:46:26 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/10 23:03:15 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	**realloc_envp(char **envp)
+{
+	int		i;
+	int		j;
+	char	**dup;
+
+	i = 0;
+	j = 0;
+	dup = malloc((sizeofdoubletab(envp) + 1) * sizeof(char *));
+	while (envp && envp[i])
+	{
+		dup[j] = ft_strdup(envp[i]);
+		i++;
+		j++;
+	}
+	dup[j] = NULL;
+	return (dup);
+}
 
 char	**findpath(char **envp)
 {
@@ -88,7 +107,7 @@ char *sendpath(char *str, char **paths)
 	{
 		pathtest = ft_sup_join(paths[i], '/', str);
 		if (access(pathtest, F_OK) == 0)
-			return (pathtest);
+			return (free(pathtest), ft_strjoin(paths[i], "/"));
 		free(pathtest);
 		i++;
 	}

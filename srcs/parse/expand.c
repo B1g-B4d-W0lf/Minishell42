@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 17:57:15 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/08 22:57:38 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/10 23:21:25 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ char *seeknreplace(char *str, char **temp, char *expanded)
 	return (expanded);
 }
 
-char *expanding(char *str)
+char *expanding(char *str, char **envp)
 {
 	int		i;
 	int		pos[2];
@@ -111,7 +111,7 @@ char *expanding(char *str)
 			while (str[i] && str[i] != ' ' && str[i] != '\"')//cas $., $8, $a  règle variable
 				i++;
 			pos[1] = i;
-			temp[j] = getenv(ft_strduppos(str, pos[0], pos[1]));
+			temp[j] = ft_getenv(ft_strduppos(str, pos[0], pos[1]), envp);
 			j++;
 		}
 		if (str[i])

@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 17:33:26 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/10/28 16:21:05 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/09 19:14:11 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	checknotoken(char *str)
 	return (0);
 }
 //check si la ligne n'as pas d'erreurs de syntaxe/de mauvais symbole
-int	checkline(t_mini *mini)
+int	checkline(t_minish *mini)
 {
 	char *str;
 
@@ -66,7 +66,7 @@ int	checkline(t_mini *mini)
 	}
 	return (1);
 }
-void	printcmds(t_mini *mini)
+/*void	printcmds(t_minish *mini)
 {
 	int	i;
 	int j;
@@ -135,7 +135,7 @@ void	printcmds(t_mini *mini)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_mini	mini;
+	t_minish	mini;
 	
 	(void)argc;
 	(void)argv;
@@ -161,4 +161,4 @@ int	main(int argc, char **argv, char **envp)
 
 	}
 	//freedoubletab(mini.paths);
-}
+}*/

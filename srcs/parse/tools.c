@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 16:51:21 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/06 19:34:00 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/09 18:44:25 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,12 @@ int	findchar(char *str, char c)
 	return (0);
 }
 
-int	sizeofdoubletab(char **tab)
+int	sizeofdoubletab(char **tabl)
 {
 	int	i;
 	
 	i = 0;
-	while(tab[i])
+	while(tabl[i])
 		i++;
 	return(i);
 }
