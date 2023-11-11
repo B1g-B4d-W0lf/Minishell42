@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 16:34:51 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/10/30 17:25:06 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/11 22:14:19 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int	symbolcount(char *str)
 	}
 	return (i + count);
 }
+
 void	addspace(int *i, int *j, char *spaced, char *str)
 {
 	spaced[*j] = ' ';
@@ -48,6 +49,7 @@ void	addspace(int *i, int *j, char *spaced, char *str)
 	*j = *j + 1;
 	*i = *i + 1;	
 }
+
 void execspaceit(int *i, int *j, char *spaced, char *str)
 {
 	if ((str[*i] == '|' || str[*i] == '>' || str[*i] == '<'
@@ -112,55 +114,5 @@ char	*spaceit(char *str)
 		execspaceit(&i, &j, spaced, str);
 	}
 	spaced[j] = '\0';
-	return (spaced);
+	return (free(str), spaced);
 } 
-//bool pr trouver si il y a des pipes dans la line
-int	ispipe(char *str)
-{
-	int	i;
-	int	pipe;
-	
-	i = 0;
-	pipe = 0;
-	while (str[i])
-	{
-		if (str[i] == '|' && str[i + 1] != '|')
-			pipe ++;
-		i++;
-	}
-	return (pipe);
-}
-
-/*char	*findtoken(char *str)
-{
-	int		i;
-	int		j;
-	char 	*tokens;
-
-	i = 0;
-	j = 0;
-	tokens = malloc((ft_strlen(str) + 1) * sizeof (char));
-	while (str[i])
-	{
-		if (str[i] == '<' || str[i] == '>')
-		{
-			tokens[j] = str[i];
-			j++;
-			i++;
-			if (str[i] == '<' || str[i] == '>')
-			{
-				tokens[j] = str[i];
-				j++;
-			}
-			tokens[j] = ' ';
-			j++;
-		}
-		i++;
-	}
-	while(j <= i)
-	{
-		tokens[j] = '\0';
-		j++;
-	}
-	return (tokens);
-}*/

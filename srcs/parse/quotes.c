@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:19:41 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/09 20:43:41 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/11 21:40:09 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,10 +111,15 @@ char **sortquotes(char *str)
 	{
 		if (str[pos[i]] == str[pos[k]])
 		{
-			tabl[j] = ft_strduppos(str, pos[i], pos[k]);
+			if (pos[i] + 1 == pos[k])
+				tabl[j] = NULL;
+			else
+			{
+				tabl[j] = ft_strduppos(str, pos[i], pos[k]);
+				k++;
+				j++;
+			}
 			i = k + 1;
-			k++;
-			j++;
 		}
 		k++;
 	}

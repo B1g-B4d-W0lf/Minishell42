@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 16:51:21 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/09 18:44:25 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/11 20:03:13 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,20 @@ void	dupcmd(char **cmd, char **src, int *i, int *j)
 	cmd[*i] = ft_strdup(src[*j]);
 	*i = *i + 1;
 	*j = *j + 1;
+}
+
+int	ispipe(char *str)
+{
+	int	i;
+	int	pipe;
+	
+	i = 0;
+	pipe = 0;
+	while (str[i])
+	{
+		if (str[i] == '|' && str[i + 1] != '|')
+			pipe ++;
+		i++;
+	}
+	return (pipe);
 }

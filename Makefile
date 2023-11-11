@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/11/11 22:12:00 by wfreulon          #+#    #+#              #
+#    Updated: 2023/11/11 22:12:01 by wfreulon         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME		= minishell
 
 DIR_SRCS	= srcs
@@ -80,7 +92,6 @@ SRCS_NAMES		= 	main/main.c		\
 					parse/parse_utils.c \
 					parse/quotes.c \
 					parse/redir.c \
-					parse/splitjoin.c \
 					parse/quotes_utils.c \
 					parse/tools.c \
 					parse/ft_getenv.c

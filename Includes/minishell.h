@@ -422,7 +422,6 @@ int	parse(t_mini *mini, char *line);
 int		symbolcount(char *str);
 char	*spaceit(char *str);
 void	addspace(int *i, int *j, char *spaced, char *str);
-int		ispipe(char *str);
 
 //envp.c : gestion des paths
 char	**findpath(char **envp);
@@ -453,14 +452,12 @@ int		countredir(char **str);
 int		countfiles(char **str, char c);
 int		*sortredir(char **str);
 
-//splitjoin.c
-char	*spaceitbis(char *str);
-
 //tools.c
 void	dupcmd(char **cmd, char **src, int *i, int *j);
 void	fillnull(char **str, int *i, int len);
 int		findchar(char *str, char c);
 int		sizeofdoubletab(char **tabl);
+int		ispipe(char *str);
 
 //ft_getenv.c
 char	*ft_getenv(char *str, char **envp);

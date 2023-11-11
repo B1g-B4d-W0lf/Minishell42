@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 17:57:15 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/10 23:21:25 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/11 21:09:30 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int totallen(char **str)
 	return (total);
 }
 
-char *seeknreplace(char *str, char **temp, char *expanded)
+void seeknreplace(char *str, char **temp, char *expanded)
 {
 	int	i;
 	int	j;
@@ -85,7 +85,7 @@ char *seeknreplace(char *str, char **temp, char *expanded)
 		expanded[j] = '\0';
 		j++;
 	}
-	return (expanded);
+	return ;
 }
 
 char *expanding(char *str, char **envp)
@@ -119,9 +119,9 @@ char *expanding(char *str, char **envp)
 	}
 	temp[j] = NULL;
 	expanded = malloc((ft_strlen(str) + totallen(temp) + 1) * sizeof(char));
-	expanded = seeknreplace(str, temp, expanded);
+	seeknreplace(str, temp, expanded);
 	freedoubletab(temp);
-	return (expanded);
+	return (free(str), expanded);
 }
 //cherche la valeur de la variable et la remplace dans le tableau yay
 /*char *seeknreplacedoubletab(char *str)

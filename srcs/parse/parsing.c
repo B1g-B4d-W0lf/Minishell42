@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:44:06 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/10 23:30:01 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/11 22:20:45 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,13 @@ char **execfindcmdredir(char **str, char **quotetab, char **cmd, int pos)
 			if (((str[i + 1]) && str[i + 1][0] != '<')
 				|| insidequotes(str, pos) != 0)
 			{
-				pos = i - 1;
-				if (str[i - 1] && (str[i - 1][0] == '<' || str[i - 1][0] == '>')
-				&& insidequotes(str, pos) == 0)
-					i++;
+				if (i != 0)
+				{
+					pos = i - 1;
+					if (str[i - 1] && (str[i - 1][0] == '<' || str[i - 1][0] == '>')
+					&& insidequotes(str, pos) == 0)
+						i++;
+				}
 				while (str[i] && str[i][0] != '<' && str[i][0] != '>')
 				{
 					while (str[i] && (str[i][0] == '\"' || str[i][0] == '\''))
@@ -109,11 +112,11 @@ t_cmd	fillcmd(char *str, char **envp, t_cmd *cmd)
 	char	**line;
 	char	**quote;
 	char	**paths;
-	
+	//checknotoken line pr erreur à peaufiner (>> >> >> >> >> >>) entre autre
 	paths = findpath(envp);
 	str = expanding(str, envp);
-	quote = sortquotes(str);
-	str = spaceit(str);
+	quote = sortquotes(str);//faire la meme que pour findcmd avec out et in pr quotes!!!!
+	str = spaceit(str); //pb quote/redir, rajouter des espaces, mais ^^^^ peu sans doute régler le meme pb
 	line = ft_split(str, ' ');
 	cmd->input_file = sortfiles(line, '<');
 	cmd->output_file = sortfiles(line, '>');
@@ -127,8 +130,8 @@ t_cmd	fillcmd(char *str, char **envp, t_cmd *cmd)
 	freedoubletab(line);
 	free(str);
 	freedoubletab(quote);
-	free(paths);
-	return (*cmd);
+	freedoubletab(paths);
+	return (*cmd);//faire malloc en chaine
 }
 //separer et stocker les infos de la ligne dans la struct
 int	parse(t_mini *mini, char *line)
@@ -140,8 +143,7 @@ int	parse(t_mini *mini, char *line)
 	if (ispipe(line) == 0)
 	{
 		mini->cmds = malloc(sizeof (t_fill) * 2);
-		mini->cmds[0] = fillcmd(line, mini->envp, &mini->cmds[0]);
-		//mini->cmds[1] = NULL;
+		mini->cmds[0] = fillcmd(ft_strdup(line), mini->envp, &mini->cmds[0]);
 		return(1);
 	}
 	else if (ispipe(line))
@@ -155,7 +157,6 @@ int	parse(t_mini *mini, char *line)
 			i++;
 		}
 		freedoubletab(piped);
-		//mini->cmds[nbr] = NULL;
 		return(ispipe(line));
 	}
 	return (-1);

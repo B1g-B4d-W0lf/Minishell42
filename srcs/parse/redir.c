@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 18:48:09 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/09 20:44:36 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/11 17:45:34 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,13 +93,13 @@ int	*sortredir(char **str)
 		if (insidequotes(str, pos) == 0)
 		{
 			if (str[i][0] == '<' && !str[i][1])
-				tabl[++j] = 1;
+				tabl[++j] = redir_left;
 			else if (str[i][0] == '>' && !str[i][1])
-				tabl[++j] = 2;
+				tabl[++j] = redir_right;
 			else if (str[i][0] == '>' && str[i][1])
-				tabl[++j] = 3;
+				tabl[++j] = redir_double_right;
 			else if (str[i][0] == '<' && str[i][1])
-				tabl[++j] = 4;
+				tabl[++j] = redir_double_left;
 		}
 		i++;
 	}

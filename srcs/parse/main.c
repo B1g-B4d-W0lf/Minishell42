@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 17:33:26 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/09 19:14:11 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/11 22:19:01 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ int	checknotoken(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '\\' || str[i] == ';' || str[i] == '!')
-			return (1);
 		if (str[i] == '|' && str[i + 1] == '|')
 			return(1);
 		if ((str[i] == '>' && str[i + 1] == '<') || (str[i] == '<' && str[i + 1] == '>'))
