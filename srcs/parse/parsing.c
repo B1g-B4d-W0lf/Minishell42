@@ -6,104 +6,82 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:44:06 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/11 22:20:45 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/12 22:08:49 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char **execfindcmdnoredir(char **str, char **quotetab, char **cmd, int pos)
+char **addquoted(char **str, char **quotetab)
 {
-	int	i;
-	int	j;
-	int	k;
+	int		i;
+	int		j;
+	int		k;
+	int		pos;
+	char	**line;
 	
 	i = 0;
 	j = 0;
 	k = 0;
+	pos = 0;
+	line = malloc((sizeofdoubletab(str) + 1) * sizeof (char *));
 	while (str[i])
 	{
 		while (str[i] && (str[i][0] == '\"' || str[i][0] == '\''))
 			i++;
 		pos = i;
 		if (str[i] && insidequotes(str, pos) == 0)
-			dupcmd(cmd, str, &k, &i);
+			dupcmd(line, str, &k, &i);
 		else if (str[i] && insidequotes(str, pos) != 0)
 		{
-			dupcmd(cmd, quotetab, &k, &j);
+			dupcmd(line, quotetab, &k, &j);
 			i++;
 			while (str[i] && str[i][0] != '\"' && str[i][0] != '\'')
 				i++;
 		}
 	}
-	fillnull(cmd, &k, sizeofdoubletab(str));
-	return (cmd);
+	fillnull(line, &k, (sizeofdoubletab(str)));
+	freedoubletab(str);
+	return (line);
 }
 
-char **execfindcmdredir(char **str, char **quotetab, char **cmd, int pos)
+char **execfindcmdredir(char **str, char **cmd)
 {
 	int	i;
-	int	j;
 	int	k;
 	
 	i = 0;
-	j = 0;
 	k = 0;
 	while (str[i])
 	{
-		pos = i;
-		if ((str[i][0] != '<' && str[i][0] != '>') || insidequotes(str, pos) != 0)
+		if ((str[i][0] != '<' && str[i][0] != '>'))
 		{
-			pos = i + 1;
-			if (((str[i + 1]) && str[i + 1][0] != '<')
-				|| insidequotes(str, pos) != 0)
+			if (((str[i + 1]) && str[i + 1][0] != '<') || !str[i + 1])
 			{
 				if (i != 0)
 				{
-					pos = i - 1;
-					if (str[i - 1] && (str[i - 1][0] == '<' || str[i - 1][0] == '>')
-					&& insidequotes(str, pos) == 0)
+					if (str[i - 1] && (str[i - 1][0] == '<' || str[i - 1][0] == '>'))
 						i++;
 				}
 				while (str[i] && str[i][0] != '<' && str[i][0] != '>')
-				{
-					while (str[i] && (str[i][0] == '\"' || str[i][0] == '\''))
-						i++;
-					pos = i;
-					if (str[i] && insidequotes(str, pos) == 0)
 						dupcmd(cmd, str, &k, &i);
-					else if (str[i] && insidequotes(str, pos) != 0)
-					{
-						dupcmd(cmd, quotetab, &k, &j);
-						i++;
-						while (str[i] && str[i][0] != '\"' && str[i][0] != '\'')
-							i++;
-					}
-				}
 			}
 		}
-		if (str[i] && str[i + 1])
+		if (str[i])
 			i++;
-		else 
-			break;
 	}
 	fillnull(cmd, &k, sizeofdoubletab(str));
 	return (cmd);
 }
 
-char **findcmd(char **str, char **quotetab, char *spaced)
+char **findcmd(char **str)
 {
-	int		pos;
 	char	**cmd;
 	
-	pos = 0;
 	cmd = malloc((sizeofdoubletab(str) + 1) * sizeof(char *));
 	if (!cmd)
 		return(NULL);
-	if (!findchar(spaced, '<') && !findchar(spaced, '>'))
-		cmd = execfindcmdnoredir(str, quotetab, cmd, pos);
-	else if (findchar(spaced, '<') || findchar(spaced, '>'))
-		cmd = execfindcmdredir(str, quotetab, cmd, pos);
+	cmd = execfindcmdredir(str, cmd);
 	return (cmd);
 }
 //remplir la struct tmtc
@@ -112,21 +90,21 @@ t_cmd	fillcmd(char *str, char **envp, t_cmd *cmd)
 	char	**line;
 	char	**quote;
 	char	**paths;
-	//checknotoken line pr erreur à peaufiner (>> >> >> >> >> >>) entre autre
+
 	paths = findpath(envp);
-	str = expanding(str, envp);
-	quote = sortquotes(str);//faire la meme que pour findcmd avec out et in pr quotes!!!!
-	str = spaceit(str); //pb quote/redir, rajouter des espaces, mais ^^^^ peu sans doute régler le meme pb
+	str = expanding(str, envp);//voir pour tracer expand/non expand pr les erreurs
+	quote = sortquotes(str);//quotes vide à gérer + erreur quote pas fermées
+	str = spaceit(str);
 	line = ft_split(str, ' ');
+	line = addquoted(line, quote);
 	cmd->input_file = sortfiles(line, '<');
 	cmd->output_file = sortfiles(line, '>');
-	cmd->redir = countredir(line);
+	cmd->redir = countredir(line);//heredoc à voir ce qui manque 
 	cmd->redir_type = sortredir(line);
 	cmd->redir_in = countfiles(line, '<');
 	cmd->redir_out = countfiles(line, '>');
-	cmd->cmd = findcmd(line, quote, str);
+	cmd->cmd = findcmd(line);
 	cmd->path = sendpath(cmd->cmd[0], paths);
-	
 	freedoubletab(line);
 	free(str);
 	freedoubletab(quote);
@@ -140,6 +118,8 @@ int	parse(t_mini *mini, char *line)
 	int		nbr = 0;
 	int		i = 0;
 	
+	if (checklineerr(line))// test à faire pour compléter
+		return (-1);
 	if (ispipe(line) == 0)
 	{
 		mini->cmds = malloc(sizeof (t_fill) * 2);

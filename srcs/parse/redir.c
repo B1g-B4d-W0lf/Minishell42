@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 18:48:09 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/11 17:45:34 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/12 20:14:34 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,13 @@
 int	countredir(char **str)
 {
 	int	i;
-	int	pos;
 	int	count;
 
 	i = 0;
 	count = 0;
 	while (str[i])
 	{
-		pos = i;
-		if ((str[i][0] == '<' || str[i][0] == '>') && insidequotes(str, pos) == 0)
+		if (str[i][0] == '<' || str[i][0] == '>')
 			count++;
 		i++;
 	}
@@ -33,15 +31,13 @@ int	countredir(char **str)
 int countfiles(char **str, char c)
 {
 	int	i;
-	int	pos;
 	int	count;
 	
 	i = 0;
 	count = 0;
 	while(str[i])
 	{
-		pos = i;
-		if (str[i][0] == c && insidequotes(str, pos) == 0)
+		if (str[i][0] == c)
 			count++;
 		i++;
 	}
@@ -52,7 +48,6 @@ char **sortfiles(char **str, char c)
 {
 	int		i;
 	int		j;
-	int		pos;
 	char	**files;
 
 	i = 0;
@@ -62,11 +57,13 @@ char **sortfiles(char **str, char c)
 		return (NULL);
 	while (str[i])
 	{
-		pos = i;
-		if(str[i][0] == c && insidequotes(str, pos) == 0)
+		if(str[i][0] == c)
 		{
 			i++;
-			files[j] = ft_strdup(str[i]);
+			if (str[i][0] == '\"' || str[i][0] == '\'' )
+				files[j] = ft_strduppos(str[i], 1, ft_strlen(str[i]) - 2);
+			else
+				files[j] = ft_strdup(str[i]);
 			j++;
 		}
 		i++;
@@ -79,7 +76,6 @@ int	*sortredir(char **str)
 {
 	int	i;
 	int	j;
-	int	pos;
 	int	*tabl;
 
 	i = 0;
@@ -89,18 +85,14 @@ int	*sortredir(char **str)
 		return (NULL);
 	while (str[i])
 	{
-		pos = i;
-		if (insidequotes(str, pos) == 0)
-		{
-			if (str[i][0] == '<' && !str[i][1])
-				tabl[++j] = redir_left;
-			else if (str[i][0] == '>' && !str[i][1])
-				tabl[++j] = redir_right;
-			else if (str[i][0] == '>' && str[i][1])
-				tabl[++j] = redir_double_right;
-			else if (str[i][0] == '<' && str[i][1])
-				tabl[++j] = redir_double_left;
-		}
+		if (str[i][0] == '<' && !str[i][1])
+			tabl[++j] = redir_left;
+		else if (str[i][0] == '>' && !str[i][1])
+			tabl[++j] = redir_right;
+		else if (str[i][0] == '>' && str[i][1])
+			tabl[++j] = redir_double_right;
+		else if (str[i][0] == '<' && str[i][1])
+			tabl[++j] = redir_double_left;
 		i++;
 	}
 	return (tabl);

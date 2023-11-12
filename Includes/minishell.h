@@ -416,50 +416,53 @@ int					ft_line_empty(char *line, int todo);
 //parse directory
 
 //parsing.c
-int	parse(t_mini *mini, char *line);
+int					parse(t_mini *mini, char *line);
 
 //parse_utils.c
-int		symbolcount(char *str);
-char	*spaceit(char *str);
-void	addspace(int *i, int *j, char *spaced, char *str);
+int					symbolcount(char *str);
+char				*spaceit(char *str);
+void				addspace(int *i, int *j, char *spaced, char *str);
 
 //envp.c : gestion des paths
-char	**findpath(char **envp);
-char	*sendpath(char *str, char **paths);
-char	*ft_sup_join(char *s1, char c, char *s2);
-char	**realloc_envp(char **envp);
+char				**findpath(char **envp);
+char				*sendpath(char *str, char **paths);
+char				*ft_sup_join(char *s1, char c, char *s2);
+char				**realloc_envp(char **envp);
 
 //free.c : free les malloc
-void	cleanleak(t_minish *mini);
-void	freedoubletab(char **tabl);
+void				cleanleak(t_minish *mini);
+void				freedoubletab(char **tabl);
 
 //expand.c : gestion expand
-char	*expanding(char *str, char **envp);
+char				*expanding(char *str, char **envp);
 
 //quotes.c : gestion des quotes
-int		insidequotes(char **str, int pos);
-char	**sortquotes(char *str);
-char	*ft_strduppos(char *src, int start, int end);
-int		insidequotesstr(char *str, int pos);
+int					insidequotes(char **str, int pos);
+char				**sortquotes(char *str);
+char				*ft_strduppos(char *src, int start, int end);
+int					insidequotesstr(char *str, int pos);
 
 //quotes_utils.c
-int		countquotes(char *str);
-int		afterquotes(char **str, int firstquote, int pos, int *i);
+int					countquotes(char *str);
+int					afterquotes(char **str, int firstquote, int pos, int *i);
 
 //redir.c :gestion outfile et infile
-char	**sortfiles(char **str, char c);
-int		countredir(char **str);
-int		countfiles(char **str, char c);
-int		*sortredir(char **str);
+char				**sortfiles(char **str, char c);
+int					countredir(char **str);
+int					countfiles(char **str, char c);
+int					*sortredir(char **str);
 
 //tools.c
-void	dupcmd(char **cmd, char **src, int *i, int *j);
-void	fillnull(char **str, int *i, int len);
-int		findchar(char *str, char c);
-int		sizeofdoubletab(char **tabl);
-int		ispipe(char *str);
+void				dupcmd(char **cmd, char **src, int *i, int *j);
+void				fillnull(char **str, int *i, int len);
+int					findchar(char *str, char c);
+int					sizeofdoubletab(char **tabl);
+int					ispipe(char *str);
 
 //ft_getenv.c
-char	*ft_getenv(char *str, char **envp);
+char				*ft_getenv(char *str, char **envp);
+
+//checkline.c
+int					checklineerr(char *str);
 
 #endif

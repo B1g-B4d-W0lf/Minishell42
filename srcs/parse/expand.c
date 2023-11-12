@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 17:57:15 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/11 21:09:30 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/12 19:42:47 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ char *expanding(char *str, char **envp)
 			while (str[i] && str[i] != ' ' && str[i] != '\"')//cas $., $8, $a  règle variable
 				i++;
 			pos[1] = i;
-			temp[j] = ft_getenv(ft_strduppos(str, pos[0], pos[1]), envp);
+			temp[j] = ft_getenv(ft_strduppos(str, pos[0] + 1, pos[1] - 1), envp);
 			j++;
 		}
 		if (str[i])

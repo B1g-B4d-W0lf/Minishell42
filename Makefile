@@ -6,7 +6,7 @@
 #    By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/11 22:12:00 by wfreulon          #+#    #+#              #
-#    Updated: 2023/11/11 22:12:01 by wfreulon         ###   ########.fr        #
+#    Updated: 2023/11/12 21:03:34 by wfreulon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -84,7 +84,6 @@ SRCS_NAMES		= 	main/main.c		\
 					exec/builtin/export/alpha_export_five.c \
 					exec/builtin/export/alpha_export_six.c \
 					main/main_bis.c \
-					parse/main.c \
 					parse/envp.c \
 					parse/parsing.c \
 					parse/free.c \
@@ -94,7 +93,8 @@ SRCS_NAMES		= 	main/main.c		\
 					parse/redir.c \
 					parse/quotes_utils.c \
 					parse/tools.c \
-					parse/ft_getenv.c
+					parse/ft_getenv.c \
+					parse/checkline.c
 
 OBJS_NAMES	= ${SRCS_NAMES:.c=.o}
 

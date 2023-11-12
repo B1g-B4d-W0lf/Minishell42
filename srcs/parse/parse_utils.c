@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 16:34:51 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/11 22:14:19 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/12 22:04:00 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	symbolcount(char *str)
 		else
 			i++;
 	}
-	return (i + count);
+	return (i + (count * 2));
 }
 
 void	addspace(int *i, int *j, char *spaced, char *str)
@@ -47,34 +47,29 @@ void	addspace(int *i, int *j, char *spaced, char *str)
 	*j = *j + 1;
 	spaced[*j] = str[*i];
 	*j = *j + 1;
-	*i = *i + 1;	
+	if ((str[*i] == '<' || str[*i] == '>')
+		&& (str[*i + 1] == '<' || str[*i + 1] == '>'))
+	{
+		*i = *i + 1;
+		spaced[*j] = str[*i];
+		*j = *j + 1;
+		spaced[*j] = ' ';
+		*i = *i + 1;
+		*j = *j + 1;
+	}
+	else
+	{
+		spaced[*j] = ' ';
+		*j = *j + 1;
+		*i = *i + 1;
+	}
 }
-
+ 
 void execspaceit(int *i, int *j, char *spaced, char *str)
 {
 	if ((str[*i] == '|' || str[*i] == '>' || str[*i] == '<'
 	|| str[*i] == '\"' || str[*i] == '\''))
-	{
 		addspace(i, j, spaced, str);
-		if (str[*i] && str[*i] != '<' && str[*i] != '>')
-			addspace(i, j, spaced, str);
-		if	(str[*i] && (str[*i] == '>' || str[*i] == '<') 
-			&& (str[*i - 1] == '<' || str[*i - 1] == '>'))
-		{
-			spaced[*j] = str[*i];
-			*j = *j + 1;
-			spaced[*j] = ' ';
-			*i = *i + 1;
-			*j = *j + 1;
-		}
-	}
-	else if ((str[*i] == '|' || str[*i] == '>' || str[*i] == '<'
-	|| str[*i] == '\"' || str[*i] == '\'') && str[*i + 1] != '<'
-	&& str[*i + 1] != '>')
-	{
-		*i = *i + 1;
-		addspace(i, j, spaced, str);
-	}
 	else 
 	{
 		spaced[*j] = str[*i];
@@ -90,29 +85,19 @@ char	*spaceit(char *str)
 	int		j;
 	char	*spaced;
 
-	i = 1;
+	i = 0;
 	j = 0;
 	spaced = malloc((symbolcount(str) + 1) * sizeof(char));
 	if (!spaced)
 		return (NULL);
-	spaced[j] = str[0];
-	j++;
-	if (((str[0] == '<' || str[0] == '>') || (str[0] == '\'' || str[0] == '\"')))
-	{
-		if ((str[0] == '<' || str[0] == '>') && (str[1] == '<' || str[1] == '>'))
-		{
-			spaced[j] = str[1];
-			j++;
-			i++;
-			addspace(&i, &j, spaced, str);
-		}
-		else
-			addspace(&i, &j, spaced, str);
-	}
 	while (str[i])
-	{
 		execspaceit(&i, &j, spaced, str);
+	while (j < symbolcount(str))
+	{
+		spaced[j] = '\0';
+		j++;
 	}
 	spaced[j] = '\0';
+	printf("%s\n", spaced);
 	return (free(str), spaced);
 } 
