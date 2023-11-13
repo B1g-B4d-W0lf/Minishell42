@@ -6,11 +6,25 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:44:06 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/12 22:08:49 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/13 20:49:33 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int		isemptyquote(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (insidequotes(str, i) == 3)
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 char **addquoted(char **str, char **quotetab)
 {
@@ -24,6 +38,11 @@ char **addquoted(char **str, char **quotetab)
 	j = 0;
 	k = 0;
 	pos = 0;
+	if (isemptyquote(str) == 1)
+	{
+		freedoubletab(str);
+		return (NULL);
+	}
 	line = malloc((sizeofdoubletab(str) + 1) * sizeof (char *));
 	while (str[i])
 	{
@@ -84,19 +103,52 @@ char **findcmd(char **str)
 	cmd = execfindcmdredir(str, cmd);
 	return (cmd);
 }
+
+int	testtab(char **str, int len)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0; 
+	while (i < len)
+	{
+		if (str[i] == NULL)
+			count ++;
+		i++;
+	}
+	if (count == i)
+		return (1);
+	return (0);
+}
+
+void	freecreations(char *str, char **line, char **quote, char **paths)
+{
+	if (line)
+		freedoubletab(line);
+	if (quote)
+		freedoubletab(quote);
+	if (paths)
+		freedoubletab(paths);
+	free(str);	
+}
 //remplir la struct tmtc
-t_cmd	fillcmd(char *str, char **envp, t_cmd *cmd)
+int	fillcmd(char *str, char **envp, t_cmd *cmd)
 {
 	char	**line;
 	char	**quote;
 	char	**paths;
-
+	
 	paths = findpath(envp);
 	str = expanding(str, envp);//voir pour tracer expand/non expand pr les erreurs
-	quote = sortquotes(str);//quotes vide à gérer + erreur quote pas fermées
+	quote = sortquotes(str);//quotes vide et pas fermées bof
 	str = spaceit(str);
 	line = ft_split(str, ' ');
-	line = addquoted(line, quote);
+	if (!(line = addquoted(line, quote)))
+	{
+		freecreations(str, line, quote, paths);
+		return (-1);
+	}
 	cmd->input_file = sortfiles(line, '<');
 	cmd->output_file = sortfiles(line, '>');
 	cmd->redir = countredir(line);//heredoc à voir ce qui manque 
@@ -105,11 +157,8 @@ t_cmd	fillcmd(char *str, char **envp, t_cmd *cmd)
 	cmd->redir_out = countfiles(line, '>');
 	cmd->cmd = findcmd(line);
 	cmd->path = sendpath(cmd->cmd[0], paths);
-	freedoubletab(line);
-	free(str);
-	freedoubletab(quote);
-	freedoubletab(paths);
-	return (*cmd);//faire malloc en chaine
+	freecreations(str, line, quote, paths);
+	return (0);//faire malloc en chaine
 }
 //separer et stocker les infos de la ligne dans la struct
 int	parse(t_mini *mini, char *line)
@@ -123,8 +172,12 @@ int	parse(t_mini *mini, char *line)
 	if (ispipe(line) == 0)
 	{
 		mini->cmds = malloc(sizeof (t_fill) * 2);
-		mini->cmds[0] = fillcmd(ft_strdup(line), mini->envp, &mini->cmds[0]);
-		return(1);
+		if (fillcmd(ft_strdup(line), mini->envp, &mini->cmds[0]) != 0)
+		{
+			free (mini->cmds);
+			return (-1);
+		}
+		return (1);
 	}
 	else if (ispipe(line))
 	{
@@ -132,7 +185,11 @@ int	parse(t_mini *mini, char *line)
 		piped = ft_split(line, '|');
 		while (piped[i])
 		{	
-			mini->cmds[nbr] = fillcmd(piped[i], mini->envp, &mini->cmds[nbr]);
+			if (fillcmd(piped[i], mini->envp, &mini->cmds[nbr]) != 0)
+			{
+				free (mini->cmds);
+				return (-1);
+			}
 			nbr++;
 			i++;
 		}

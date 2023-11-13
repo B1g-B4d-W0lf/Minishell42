@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:19:41 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/12 19:42:39 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/13 20:51:40 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,10 +99,12 @@ char **sortquotes(char *str)
 	i = 0;
 	j = 0;
 	k = 1;
+	len = countquotes(str);
+	if (len < 2)
+		return (NULL);	
 	pos = quotespos(str);
 	if (pos == NULL)
 		return (NULL);
-	len = countquotes(str);
 	tabl = malloc ((countquotes(str) + 1 ) * sizeof (char *));
 	if (tabl == NULL)
 		return (NULL); 
@@ -110,14 +112,9 @@ char **sortquotes(char *str)
 	{
 		if (str[pos[i]] == str[pos[k]])
 		{
-			if (pos[i] + 1 == pos[k])
-				tabl[j] = NULL;
-			else
-			{
-				tabl[j] = ft_strduppos(str, pos[i], pos[k]);
-				k++;
-				j++;
-			}
+			tabl[j] = ft_strduppos(str, pos[i], pos[k]);
+			k++;
+			j++;
 			i = k + 1;
 		}
 		k++;

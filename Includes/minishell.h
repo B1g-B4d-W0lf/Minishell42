@@ -88,7 +88,7 @@ typedef struct s_cmd
 	int				*redir_type;
 	int				redir_in;
 	int				redir_out;
-	int				p;
+	int				valid;
 }					t_cmd;
 
 typedef struct s_mini
