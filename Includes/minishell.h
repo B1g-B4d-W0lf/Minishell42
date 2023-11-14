@@ -88,7 +88,7 @@ typedef struct s_cmd
 	int				*redir_type;
 	int				redir_in;
 	int				redir_out;
-	int				valid;
+	int				p;
 }					t_cmd;
 
 typedef struct s_mini
@@ -450,7 +450,7 @@ int					afterquotes(char **str, int firstquote, int pos, int *i);
 char				**sortfiles(char **str, char c);
 int					countredir(char **str);
 int					countfiles(char **str, char c);
-int					*sortredir(char **str);
+int					*sortredir(char **str, int *hd);
 
 //tools.c
 void				dupcmd(char **cmd, char **src, int *i, int *j);

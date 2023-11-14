@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 16:34:51 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/12 22:04:00 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/14 18:45:23 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,5 @@ char	*spaceit(char *str)
 		j++;
 	}
 	spaced[j] = '\0';
-	printf("%s\n", spaced);
 	return (free(str), spaced);
 } 

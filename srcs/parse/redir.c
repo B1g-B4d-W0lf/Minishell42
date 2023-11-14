@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 18:48:09 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/12 20:14:34 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/14 21:36:16 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,16 @@ char **sortfiles(char **str, char c)
 	return (files);
 }
 
-int	*sortredir(char **str)
+int	*sortredir(char **str, int *hd)
 {
 	int	i;
 	int	j;
+	int	k;
 	int	*tabl;
 
 	i = 0;
 	j = -1;
+	k = 0;
 	tabl = malloc(countredir(str) * sizeof(int));
 	if (tabl == NULL)
 		return (NULL);
@@ -93,6 +95,14 @@ int	*sortredir(char **str)
 			tabl[++j] = redir_double_right;
 		else if (str[i][0] == '<' && str[i][1])
 			tabl[++j] = redir_double_left;
+		if (str[i + 1] && (str[i][0] == '<' || str[i][0] == '>'))
+		{
+			if (str[i + 1][0] == '\"' || str[i + 1][0] == '\'')
+				hd[k] = 1;
+			else
+				hd[k] = 0;
+			k++;
+		}
 		i++;
 	}
 	return (tabl);

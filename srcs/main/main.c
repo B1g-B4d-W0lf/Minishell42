@@ -57,7 +57,7 @@ void	printcmd(t_mini *mini, t_cmd *cmd)
 	j = 0;
 	while (i < mini->nb_cmd)
 	{
-		while(cmd[i].cmd[j])
+		while(cmd[i].cmd && cmd[i].cmd[j])
 		{
 			printf("%s\n", cmd[i].cmd[j]);
 			j++;

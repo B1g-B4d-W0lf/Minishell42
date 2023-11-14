@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:44:06 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/13 20:49:33 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/14 21:55:24 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,10 @@ char **execfindcmdredir(char **str, char **cmd)
 		if (str[i])
 			i++;
 	}
-	fillnull(cmd, &k, sizeofdoubletab(str));
+	if (k != 0)
+		fillnull(cmd, &k, sizeofdoubletab(str));
+	else 
+		cmd = NULL;
 	return (cmd);
 }
 
@@ -138,27 +141,32 @@ int	fillcmd(char *str, char **envp, t_cmd *cmd)
 	char	**line;
 	char	**quote;
 	char	**paths;
+	char	*spaced;
 	
 	paths = findpath(envp);
-	str = expanding(str, envp);//voir pour tracer expand/non expand pr les erreurs
-	quote = sortquotes(str);//quotes vide et pas fermées bof
-	str = spaceit(str);
-	line = ft_split(str, ' ');
+	spaced = expanding(str, envp);
+	quote = sortquotes(spaced);
+	spaced = spaceit(spaced);
+	line = ft_split(spaced, ' ');
 	if (!(line = addquoted(line, quote)))
 	{
-		freecreations(str, line, quote, paths);
+		freecreations(spaced, line, quote, paths);
 		return (-1);
 	}
+	cmd->hd = malloc(countredir(line) * sizeof(int));
+	cmd->redir = countredir(line);
+	cmd->redir_type = sortredir(line, cmd->hd);
 	cmd->input_file = sortfiles(line, '<');
 	cmd->output_file = sortfiles(line, '>');
-	cmd->redir = countredir(line);//heredoc à voir ce qui manque 
-	cmd->redir_type = sortredir(line);
 	cmd->redir_in = countfiles(line, '<');
 	cmd->redir_out = countfiles(line, '>');
 	cmd->cmd = findcmd(line);
-	cmd->path = sendpath(cmd->cmd[0], paths);
-	freecreations(str, line, quote, paths);
-	return (0);//faire malloc en chaine
+	if (cmd->cmd)
+		cmd->path = sendpath(cmd->cmd[0], paths);
+	else if (!cmd->cmd)
+		free(cmd->cmd);
+	freecreations(spaced, line, quote, paths);
+	return (0);
 }
 //separer et stocker les infos de la ligne dans la struct
 int	parse(t_mini *mini, char *line)
@@ -167,7 +175,7 @@ int	parse(t_mini *mini, char *line)
 	int		nbr = 0;
 	int		i = 0;
 	
-	if (checklineerr(line))// test à faire pour compléter
+	if (checklineerr(line))
 		return (-1);
 	if (ispipe(line) == 0)
 	{
@@ -181,7 +189,7 @@ int	parse(t_mini *mini, char *line)
 	}
 	else if (ispipe(line))
 	{
-		mini->cmds = malloc(sizeof (t_fill) * (ispipe(line) + 1));
+		mini->cmds = malloc(sizeof (t_fill) * (ispipe(line) + 2));
 		piped = ft_split(line, '|');
 		while (piped[i])
 		{	
@@ -193,8 +201,8 @@ int	parse(t_mini *mini, char *line)
 			nbr++;
 			i++;
 		}
-		freedoubletab(piped);
-		return(ispipe(line));
+		free(piped);
+		return(ispipe(line) + 1);
 	}
 	return (-1);
 }

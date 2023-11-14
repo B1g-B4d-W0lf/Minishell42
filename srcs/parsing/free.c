@@ -24,6 +24,7 @@ void	ft_free_cmds(int i, t_mini *mini)
 		ft_clean_split(mini->cmds[k].output_file);
 		free(mini->cmds[k].path);
 		free(mini->cmds[k].redir_type);
+		free(mini->cmds[k].hd);
 	}
 	free(mini->cmds);
 }
