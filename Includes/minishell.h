@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jehubert <jehubert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 04:52:38 by alex              #+#    #+#             */
-/*   Updated: 2023/09/16 22:41:46 by jehubert         ###   ########.fr       */
+/*   Updated: 2023/11/17 08:41:23 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,6 @@ typedef struct s_minish
 	t_fill	**cmds;
 	int		exit;
 }		t_minish;
-
 
 // typedef struct s_glob
 // {
@@ -411,8 +410,6 @@ void				ft_start_main(int argc, char **argv, \
 char **envp, t_mini *mini);
 int					ft_line_empty(char *line, int todo);
 
-
-
 //parse directory
 
 //parsing.c
@@ -425,7 +422,7 @@ void				addspace(int *i, int *j, char *spaced, char *str);
 
 //envp.c : gestion des paths
 char				**findpath(char **envp);
-char				*sendpath(char *str, char **paths);
+char				*sendpath(char **str, char **paths);
 char				*ft_sup_join(char *s1, char c, char *s2);
 char				**realloc_envp(char **envp);
 
@@ -458,6 +455,7 @@ void				fillnull(char **str, int *i, int len);
 int					findchar(char *str, char c);
 int					sizeofdoubletab(char **tabl);
 int					ispipe(char *str);
+char				*dupcmdslash(char *cmd, char **dup);
 
 //ft_getenv.c
 char				*ft_getenv(char *str, char **envp);

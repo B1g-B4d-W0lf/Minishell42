@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/09 20:50:21 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/09 20:50:21 by wfreulon         ###   ########.fr       */
+/*   Created: 2023/06/07 04:52:33 by alex              #+#    #+#             */
+/*   Updated: 2023/11/17 07:45:23 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,23 +59,23 @@ void	printcmd(t_mini *mini, t_cmd *cmd)
 	{
 		while(cmd[i].cmd && cmd[i].cmd[j])
 		{
-			printf("%s\n", cmd[i].cmd[j]);
+			printf("cmd: %s\n", cmd[i].cmd[j]);
 			j++;
 		}
 		j = 0;
 		while(cmd[i].input_file[j])
 		{
-			printf("%s\n", cmd[i].input_file[j]);
+			printf("infile: %s\n", cmd[i].input_file[j]);
 			j++;
 		}
 		j = 0;
 		while(cmd[i].output_file[j])
 		{
-			printf("%s\n", cmd[i].output_file[j]);
+			printf("outfile: %s\n", cmd[i].output_file[j]);
 			j++;
 		}
 		if (cmd[i].path)
-			printf("%s\n", cmd[i].path);
+			printf("path: %s\n", cmd[i].path);
 		i++;
 	}
 }

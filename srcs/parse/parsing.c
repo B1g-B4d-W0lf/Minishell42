@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:44:06 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/16 21:02:09 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/17 08:33:51 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,21 +148,21 @@ int	fillcmd(char *str, char **envp, t_cmd *cmd)
 	quote = sortquotes(spaced);
 	spaced = spaceit(spaced);
 	line = ft_split(spaced, ' ');
+	cmd->hd = malloc(countredir(line) * sizeof(int));	
+	cmd->redir_type = sortredir(line, cmd->hd);
 	if (!(line = addquoted(line, quote)))
 	{
 		freecreations(spaced, line, quote, paths);
 		return (-1);
 	}
-	cmd->hd = malloc(countredir(line) * sizeof(int));
 	cmd->redir = countredir(line);
-	cmd->redir_type = sortredir(line, cmd->hd);
 	cmd->input_file = sortfiles(line, '<');
 	cmd->output_file = sortfiles(line, '>');
 	cmd->redir_in = countfiles(line, '<');
 	cmd->redir_out = countfiles(line, '>');
 	cmd->cmd = findcmd(line);
 	if (cmd->cmd)
-		cmd->path = sendpath(cmd->cmd[0], paths);
+		cmd->path = sendpath(&cmd->cmd[0], paths);
 	else if (!cmd->cmd)
 		cmd->path = NULL;
 	freecreations(spaced, line, quote, paths);

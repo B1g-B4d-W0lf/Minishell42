@@ -47,7 +47,7 @@ void	ft_start_main(int argc, char **argv, char **envp, t_mini *mini)
 		printf("too many argument");
 		exit(1);
 	}
-	mini->envp = realloc_envp(envp);
+	mini->envp = ft_realloc_env(envp);
 	mini->act_fd = -1;
 	stat_pointer(mini);
 }
