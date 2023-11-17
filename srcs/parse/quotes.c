@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:19:41 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/13 20:51:40 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/16 18:36:06 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,15 +100,13 @@ char **sortquotes(char *str)
 	j = 0;
 	k = 1;
 	len = countquotes(str);
-	if (len < 2)
-		return (NULL);	
 	pos = quotespos(str);
 	if (pos == NULL)
 		return (NULL);
 	tabl = malloc ((countquotes(str) + 1 ) * sizeof (char *));
 	if (tabl == NULL)
 		return (NULL); 
-	while (i < len)
+	while (k < len && i < len)
 	{
 		if (str[pos[i]] == str[pos[k]])
 		{

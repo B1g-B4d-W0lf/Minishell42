@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 20:21:20 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/13 18:33:34 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/16 21:43:51 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	havealphaornot(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (ft_isalnum(str[i]))
+		if (ft_isalnum(str[i]) || str[i] == '$')
 			count++;
 		i++;
 	}

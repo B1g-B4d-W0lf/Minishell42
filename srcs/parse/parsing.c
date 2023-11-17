@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:44:06 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/14 21:55:24 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/16 21:02:09 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,12 @@ char **addquoted(char **str, char **quotetab)
 	int		i;
 	int		j;
 	int		k;
-	int		pos;
 	char	**line;
 	
 	i = 0;
 	j = 0;
 	k = 0;
-	pos = 0;
+
 	if (isemptyquote(str) == 1)
 	{
 		freedoubletab(str);
@@ -48,10 +47,9 @@ char **addquoted(char **str, char **quotetab)
 	{
 		while (str[i] && (str[i][0] == '\"' || str[i][0] == '\''))
 			i++;
-		pos = i;
-		if (str[i] && insidequotes(str, pos) == 0)
+		if (str[i] && insidequotes(str, i) == 0)	
 			dupcmd(line, str, &k, &i);
-		else if (str[i] && insidequotes(str, pos) != 0)
+		else if (str[i] && insidequotes(str, i) != 0)
 		{
 			dupcmd(line, quotetab, &k, &j);
 			i++;
@@ -89,21 +87,23 @@ char **execfindcmdredir(char **str, char **cmd)
 		if (str[i])
 			i++;
 	}
-	if (k != 0)
-		fillnull(cmd, &k, sizeofdoubletab(str));
-	else 
-		cmd = NULL;
+	fillnull(cmd, &k, sizeofdoubletab(str));
 	return (cmd);
 }
 
 char **findcmd(char **str)
 {
 	char	**cmd;
-	
+
 	cmd = malloc((sizeofdoubletab(str) + 1) * sizeof(char *));
 	if (!cmd)
 		return(NULL);
 	cmd = execfindcmdredir(str, cmd);
+	if (!cmd[0])
+	{
+		free(cmd);
+		return (NULL);
+	}
 	return (cmd);
 }
 
@@ -164,7 +164,7 @@ int	fillcmd(char *str, char **envp, t_cmd *cmd)
 	if (cmd->cmd)
 		cmd->path = sendpath(cmd->cmd[0], paths);
 	else if (!cmd->cmd)
-		free(cmd->cmd);
+		cmd->path = NULL;
 	freecreations(spaced, line, quote, paths);
 	return (0);
 }
@@ -201,7 +201,7 @@ int	parse(t_mini *mini, char *line)
 			nbr++;
 			i++;
 		}
-		free(piped);
+		freedoubletab(piped);
 		return(ispipe(line) + 1);
 	}
 	return (-1);

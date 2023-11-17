@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:45:34 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/14 19:12:23 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/16 20:27:22 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,25 @@ char	*ft_sup_join(char *s1, char c, char *s2)
 	return (str);
 }
 
+int isbuiltin(char *str)
+{
+	if (!strncmp(str, "echo", 4))
+		return (1);
+	else if (!strncmp(str, "cd", 2))
+		return (1);
+	else if (!strncmp(str, "pwd", 3))
+		return (1);
+	else if (!strncmp(str, "export", 6))
+		return (1);
+	else if (!strncmp(str, "unset", 5))
+		return (1);
+	else if (!strncmp(str, "env", 3))
+		return (1);
+	else if (!strncmp(str, "exit", 4))
+		return (1);
+	return (0);
+}
+
 char *sendpath(char *str, char **paths)
 {
 	int		i;
@@ -96,7 +115,7 @@ char *sendpath(char *str, char **paths)
 	
 	i = 0;
 	pathtest = NULL;
-	if (str == NULL || str == NULL)
+	if (str == NULL || isbuiltin(str) || paths == NULL)
 		return(NULL);
 	if (findchar(str, '/'))
 	{
