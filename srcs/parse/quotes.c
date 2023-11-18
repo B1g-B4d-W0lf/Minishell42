@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:19:41 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/16 18:36:06 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/18 20:17:17 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,25 +66,6 @@ int	*quotespos(char *str)
 		i++;
 	}
 	return (tabl);
-}
-
-char *ft_strduppos(char *src, int start, int end)
-{
-	char	*dest;
-	int		i;
-
-	i = 0;
-	dest = malloc(((end - start) + 2) * sizeof(char));
-	if (dest == NULL)
-		return (NULL);
-	while (src[start] && start <= end)
-	{
-		dest[i] = src[start];
-		i++;
-		start++;
-	}
-	dest[i] = '\0';
-	return (dest);
 }
 
 char **sortquotes(char *str)

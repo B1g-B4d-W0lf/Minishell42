@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 04:52:38 by alex              #+#    #+#             */
-/*   Updated: 2023/11/17 08:41:23 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/18 20:29:38 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -425,10 +425,12 @@ char				**findpath(char **envp);
 char				*sendpath(char **str, char **paths);
 char				*ft_sup_join(char *s1, char c, char *s2);
 char				**realloc_envp(char **envp);
+char				*whilenorm(char *str, char *s2, int i, int j);
 
 //free.c : free les malloc
 void				cleanleak(t_minish *mini);
 void				freedoubletab(char **tabl);
+void				freecreations(char *str, char **line, char **quote, char **paths);
 
 //expand.c : gestion expand
 char				*expanding(char *str, char **envp);
@@ -436,7 +438,6 @@ char				*expanding(char *str, char **envp);
 //quotes.c : gestion des quotes
 int					insidequotes(char **str, int pos);
 char				**sortquotes(char *str);
-char				*ft_strduppos(char *src, int start, int end);
 int					insidequotesstr(char *str, int pos);
 
 //quotes_utils.c
@@ -455,7 +456,6 @@ void				fillnull(char **str, int *i, int len);
 int					findchar(char *str, char c);
 int					sizeofdoubletab(char **tabl);
 int					ispipe(char *str);
-char				*dupcmdslash(char *cmd, char **dup);
 
 //ft_getenv.c
 char				*ft_getenv(char *str, char **envp);
@@ -463,4 +463,14 @@ char				*ft_getenv(char *str, char **envp);
 //checkline.c
 int					checklineerr(char *str);
 
+//cmd.c
+char 				**findcmd(char **str);
+char 				**addquoted(char **str, char **quotetab);
+
+//tools_bis.c
+int					checkdollar(char *str);
+int 				totallen(char **str);
+char				*ft_strduppos(char *src, int start, int end);
+char				*ft_sup_join(char *s1, char c, char *s2);
+char				*dupcmdslash(char *cmd, char **dup);
 #endif

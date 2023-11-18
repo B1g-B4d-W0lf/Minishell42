@@ -6,7 +6,7 @@
 #    By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/16 22:27:42 by amonier           #+#    #+#              #
-#    Updated: 2023/11/17 06:04:48 by wfreulon         ###   ########.fr        #
+#    Updated: 2023/11/18 20:27:47 by wfreulon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -94,7 +94,9 @@ SRCS_NAMES		= 	main/main.c		\
 					parse/quotes_utils.c \
 					parse/tools.c \
 					parse/ft_getenv.c \
-					parse/checkline.c
+					parse/checkline.c \
+					parse/tools_bis.c \
+					parse/cmd.c
 
 OBJS_NAMES	= ${SRCS_NAMES:.c=.o}
 

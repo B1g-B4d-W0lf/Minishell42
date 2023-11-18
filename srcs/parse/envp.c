@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:45:34 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/17 08:42:15 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/18 20:20:58 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,32 +59,6 @@ char	*whilenorm(char *str, char *s2, int i, int j)
 		j++;
 	}
 	str[i + j] = '\0';
-	return (str);
-}
-
-char	*ft_sup_join(char *s1, char c, char *s2)
-{
-	char	*str;
-	int		i;
-	int		j;
-
-	if (!s1 || !s2)
-		return (0);
-	i = ft_strlen(s1);
-	j = ft_strlen(s2);
-	str = malloc(((i + j) + 2) * sizeof (char));
-	if (str == NULL)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (s1[i])
-	{
-		str[i] = s1[i];
-		i++;
-	}
-	str[i] = c;
-	i++;
-	str = whilenorm(str, s2, i, j);
 	return (str);
 }
 

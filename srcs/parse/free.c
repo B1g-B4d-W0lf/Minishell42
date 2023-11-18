@@ -6,12 +6,12 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 17:04:36 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/09 19:17:52 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/18 20:19:18 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-//les doubles tableaux 4 ever
+
 void	freedoubletab(char **tabl)
 {
 	int		i;
@@ -24,7 +24,7 @@ void	freedoubletab(char **tabl)
 	}
 	free(tabl);
 }
-//nom de fonction prétentieux pour un programme avec 200 leaks
+
 void	cleanleak(t_minish *mini)
 {
 	int	i;
@@ -52,4 +52,15 @@ void	cleanleak(t_minish *mini)
 		freedoubletab(mini->paths);
 		free(mini->cmds);
 	}
+}
+
+void	freecreations(char *str, char **line, char **quote, char **paths)
+{
+	if (line)
+		freedoubletab(line);
+	if (quote)
+		freedoubletab(quote);
+	if (paths)
+		freedoubletab(paths);
+	free(str);	
 }

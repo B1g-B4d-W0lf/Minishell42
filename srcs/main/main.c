@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 04:52:33 by alex              #+#    #+#             */
-/*   Updated: 2023/11/17 07:45:23 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/18 19:20:54 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ void	printcmd(t_mini *mini, t_cmd *cmd)
 
 void	process_line(t_mini *mini, char *line)
 {
+	extern int	g_status;
+	
 	if (line != NULL)
 	{
 		if (ft_line_empty(line, 0))
@@ -91,6 +93,7 @@ void	process_line(t_mini *mini, char *line)
 		printcmd(mini, mini->cmds);
 		if (mini->nb_cmd == -1)
 		{
+			g_status = 2;
 			free(line);
 			return ;
 		}
