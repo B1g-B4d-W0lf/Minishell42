@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 21:16:55 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/20 18:16:12 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/21 17:01:49 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*copyenv(char **envp, int i, int len)
 	return (var);
 }
 
-char	*ft_getenv(char *str, char **envp)
+char	*fge(char *str, char **envp)
 {
 	int		i;
 	int		len;

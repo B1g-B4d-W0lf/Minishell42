@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 20:21:20 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/20 18:23:01 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/21 15:55:07 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ char	symbolerrors(char *str)
 			return (str[i]);
 		i++;
 	}
+	while (i > 1 && (str[i - 1] == ' ' || str[i - 1] == '	'))
+		i--;
 	if (str[i - 1] == '<' || str[i - 1] == '>' || str[i - 1] == '|')
 		return (1);
 	return (0);

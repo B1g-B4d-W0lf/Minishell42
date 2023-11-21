@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 04:52:38 by alex              #+#    #+#             */
-/*   Updated: 2023/11/21 01:45:04 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/21 17:07:12 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,27 +111,37 @@ typedef struct s_files
 	int				opt_stdout;
 }					t_files;
 
-typedef struct s_fill
+typedef struct s_expand
 {
-	char	**cmd;
-	char	*path;
-	char	**infile;
-	char	**outfile;
-	char	**quote;
-	int		redir;
-	int		*redirtype;
-	int		redin;
-	int		redout;
-	int		nbr;
-}		t_fill;
+	int				i;
+	int				j;
+	int				pos[2];
+	char			**env;
+	char			*str;
+	char			**tp;
+}					t_expand;
 
-typedef struct s_minish
-{
-	char 	**paths;
-	char	*input;
-	t_fill	**cmds;
-	int		exit;
-}		t_minish;
+// typedef struct s_fill
+// {
+// 	char	**cmd;
+// 	char	*path;
+// 	char	**infile;
+// 	char	**outfile;
+// 	char	**quote;
+// 	int		redir;
+// 	int		*redirtype;
+// 	int		redin;
+// 	int		redout;
+// 	int		nbr;
+// }		t_fill;
+
+// typedef struct s_minish
+// {
+// 	char 	**paths;
+// 	char	*input;
+// 	t_fill	**cmds;
+// 	int		exit;
+// }		t_minish;
 
 // typedef struct s_glob
 // {
@@ -371,7 +381,8 @@ char				*whilenorm(char *str, char *s2, int i, int j);
 //free.c : free les malloc
 void				cleanleak(int len, t_mini *mini);
 void				freedoubletab(char **tabl);
-void				freecreations(char *str, char **line, char **quote, char **paths);
+void				freecreations(char *str, char **line, \
+char **quote, char **paths);
 
 //expand.c : gestion expand
 char				*expanding(char *str, char **envp);
@@ -399,18 +410,18 @@ int					sizeofdoubletab(char **tabl);
 int					ispipe(char *str);
 
 //ft_getenv.c
-char				*ft_getenv(char *str, char **envp);
+char				*fge(char *str, char **envp);
 
 //checkline.c
 int					checklineerr(char *str);
 
 //cmd.c
-char 				**findcmd(char **str);
-char 				**addquoted(char **str, char **quotetab);
+char				**findcmd(char **str);
+char				**addquoted(char **str, char **quotetab);
 
 //tools_bis.c
 int					checkdollar(char *str);
-int 				totallen(char **str);
+int					totallen(char **str);
 char				*ft_strduppos(char *src, int start, int end);
 char				*ft_sup_join(char *s1, char c, char *s2);
 char				*dupcmdslash(char *cmd, char **dup);

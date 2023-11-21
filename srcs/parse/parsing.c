@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:44:06 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/20 23:48:29 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/21 16:33:15 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	fillcmd(char *str, char **envp, t_cmd *cmd)
 
 	paths = findpath(envp);
 	spaced = expanding(str, envp);
-	quote = malloc((countquotes(str) + 1) * sizeof (char *));
+	quote = malloc((countquotes(spaced) + 1) * sizeof (char *));
 	if (quote == NULL)
 	{
 		freecreations(spaced, NULL, NULL, paths);
@@ -52,7 +52,7 @@ int	fillcmd(char *str, char **envp, t_cmd *cmd)
 	if (!line)
 	{
 		freecreations(spaced, line, quote, paths);
-		return (-1);
+		return (printf("syntax error\n"), -1);
 	}
 	execfillcmd(cmd, paths, line);
 	freecreations(spaced, line, quote, paths);
@@ -61,7 +61,7 @@ int	fillcmd(char *str, char **envp, t_cmd *cmd)
 
 int	nopipeexec(t_mini *mini, char *line)
 {
-	mini->cmds = malloc(sizeof (t_fill) * 2);
+	mini->cmds = malloc(sizeof (t_cmd) * 2);
 	if (fillcmd(ft_strdup(line), mini->envp, &mini->cmds[0]) != 0)
 	{
 		free (mini->cmds);
@@ -82,7 +82,7 @@ int	parse(t_mini *mini, char *line)
 		return (nopipeexec(mini, line));
 	else if (ispipe(line))
 	{
-		mini->cmds = malloc(sizeof (t_fill) * (ispipe(line) + 2));
+		mini->cmds = malloc(sizeof (t_cmd) * (ispipe(line) + 2));
 		piped = ft_split(line, '|');
 		while (piped[i])
 		{	

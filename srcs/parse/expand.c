@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 17:57:15 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/20 21:22:42 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/21 17:02:18 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,66 +61,73 @@ void	seeknreplace(char *str, char **temp, char *expanded)
 	return (free(t));
 }
 
-char	*end_expand(char **temp, char *str)
+char	*end_expand(char **temp, char *str, int j)
 {
 	char	*expanded;
 
-	expanded = malloc((ft_strlen(str) + totallen(temp) + 1) * sizeof(char));
-	seeknreplace(str, temp, expanded);
+	temp[j] = NULL;
+	if (j != 0)
+	{
+		expanded = malloc((ft_strlen(str) + totallen(temp) + 1) * sizeof(char));
+		if (!expanded)
+			return (NULL);
+		seeknreplace(str, temp, expanded);
+		freedoubletab(temp);
+		return (free(str), expanded);
+	}
 	freedoubletab(temp);
-	return (free(str), expanded);
+	return (str);
+}
+
+void	execexpand(t_expand *e)
+{
+	extern int	g_status;
+
+	if (e->str[e->i + 1] && e->str[e->i + 1] == '?' && (!e->str[e->i + 2]
+			|| e->str[e->i + 2] == ' ' || e->str[e->i + 2] == '\"'))
+	{
+		e->tp[e->j] = ft_itoa(g_status);
+		e->i = e->i + 2;
+		e->j++;
+	}
+	else if (!e->str[e->i + 1]
+		|| (e->str[e->i + 1] && isalnum(e->str[e->i + 1])))
+	{
+		e->i++;
+		e->pos[0] = e->i;
+		if (isdigit(e->str[e->i]))
+			e->i++;
+		else
+		{
+			while (e->str[e->i] && isalnum(e->str[e->i]))
+				e->i++;
+		}
+		e->pos[1] = e->i - 1;
+		e->tp[e->j] = fge(ft_strduppos(e->str, e->pos[0], e->pos[1]), e->env);
+		e->j++;
+	}
 }
 
 char	*expanding(char *str, char **envp)
 {
-	int			i;
-	extern int	g_status;
-	int			pos[2];
-	int			j;
-	char		**temp;
+	t_expand	exp;
 
-	i = 0;
-	j = 0;
+	exp.i = 0;
+	exp.j = 0;
+	exp.str = str;
+	exp.env = envp;
 	if (!checkdollar(str))
 		return (str);
-	temp = malloc((checkdollar(str) + 1) * sizeof(char *));
-	if (temp == NULL)
+	exp.tp = malloc((checkdollar(str) + 1) * sizeof(char *));
+	if (exp.tp == NULL)
 		return (NULL);
-	while (str[i])
+	while (str[exp.i])
 	{
-		if (str[i] == '$' && (insidequotesstr(str, i) == 2
-				|| insidequotesstr(str, i) == 0))
-		{
-			if (str[i + 1] && str[i + 1] == '?'
-				&& (!str[i + 2] || str[i + 2] == ' ' || str[i + 2] == '\"'))
-			{
-				temp[j] = ft_itoa(g_status);
-				while (str[i] && str[i] != ' ' && str[i] != '\"')
-					i++;
-				j++;
-			}
-			else if (!str[i + 1] || (str[i + 1] && isalnum(str[i + 1])))
-			{
-				i++;
-				pos[0] = i;
-				if (isdigit(str[i]))
-					i++;
-				else
-				{
-					while (str[i] && isalnum(str[i]))
-						i++;
-				}
-				pos[1] = i;
-				temp[j] = ft_getenv(ft_strduppos(str, pos[0], pos[1] - 1), envp);
-				j++;
-			}
-		}
-		if (str[i])
-			i++;
+		if (str[exp.i] == '$' && (insidequotesstr(str, exp.i) == 2
+				|| insidequotesstr(str, exp.i) == 0))
+			execexpand(&exp);
+		if (str[exp.i])
+			exp.i++;
 	}
-	temp[j] = NULL;
-	if (j != 0)
-		return (end_expand(temp, str));
-	freedoubletab(temp);
-	return (str);
+	return (end_expand(exp.tp, exp.str, exp.j));
 }
