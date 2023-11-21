@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 18:48:09 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/17 07:03:49 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/20 17:54:47 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,14 @@ int	countredir(char **str)
 	return (count);
 }
 
-int countfiles(char **str, char c)
+int	countfiles(char **str, char c)
 {
 	int	i;
 	int	count;
-	
+
 	i = 0;
 	count = 0;
-	while(str[i])
+	while (str[i])
 	{
 		if (str[i][0] == c)
 			count++;
@@ -44,7 +44,7 @@ int countfiles(char **str, char c)
 	return (count);
 }
 
-char **sortfiles(char **str, char c)
+char	**sortfiles(char **str, char c)
 {
 	int		i;
 	int		j;
@@ -57,7 +57,7 @@ char **sortfiles(char **str, char c)
 		return (NULL);
 	while (str[i])
 	{
-		if(str[i][0] == c)
+		if (str[i][0] == c)
 		{
 			i++;
 			if (str[i][0] == '\"' || str[i][0] == '\'' )
@@ -72,6 +72,15 @@ char **sortfiles(char **str, char c)
 	return (files);
 }
 
+void	fillhd(char **str, int *hd, int	*k, int i)
+{
+	if (str[i + 1][0] == '\"' || str[i + 1][0] == '\'')
+		hd[*k] = 1;
+	else
+		hd[*k] = 0;
+	*k = *k + 1;
+}
+
 int	*sortredir(char **str, int *hd)
 {
 	int	i;
@@ -79,13 +88,13 @@ int	*sortredir(char **str, int *hd)
 	int	k;
 	int	*tabl;
 
-	i = 0;
+	i = -1;
 	j = -1;
 	k = 0;
 	tabl = malloc(countredir(str) * sizeof(int));
 	if (tabl == NULL)
 		return (NULL);
-	while (str[i])
+	while (str[++i])
 	{
 		if (str[i][0] == '<' && !str[i][1])
 			tabl[++j] = redir_left;
@@ -96,14 +105,7 @@ int	*sortredir(char **str, int *hd)
 		else if (str[i][0] == '<' && str[i][1])
 			tabl[++j] = redir_double_left;
 		if (str[i + 1] && (str[i][0] == '<' || str[i][0] == '>'))
-		{
-			if (str[i + 1][0] == '\"' || str[i + 1][0] == '\'')
-				hd[k] = 1;
-			else
-				hd[k] = 0;
-			k++;
-		}
-		i++;
+			fillhd(str, hd, &k, i);
 	}
 	return (tabl);
 }

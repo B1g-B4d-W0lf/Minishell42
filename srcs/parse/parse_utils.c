@@ -6,12 +6,19 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 16:34:51 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/14 18:45:23 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/20 23:20:34 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-//pour le malloc de spaceit (taille + espaces)
+
+void	dupcmdquote(char **cmd, char **src, int *i, int *j)
+{
+	cmd[*i] = ft_strdup(src[*j]);
+	*i = *i + 1;
+	*j = *j + 1;
+}
+
 int	symbolcount(char *str)
 {
 	int	i;
@@ -19,17 +26,17 @@ int	symbolcount(char *str)
 
 	i = 1;
 	count = 0;
-	if (((str[0] == '<' || str[0] == '>')
-	&& (str[1] != '<' || str[1] != '>')) || (str[0] == '\'' || str[0] == '\"'))
+	if (((str[0] == '<' || str[0] == '>') && (str[1] != '<'
+				|| str[1] != '>')) || (str[0] == '\'' || str[0] == '\"'))
 		count++;
 	while (str[i])
 	{
 		if ((str[i] == '|' || str[i] == '>' || str[i] == '<'
-		|| str[i] == '\'' || str[i] == '\"'))
+				|| str[i] == '\'' || str[i] == '\"'))
 		{
 			count = count + 2;
 			i++;
-			if	(str[i] == '>' || str[i] == '<')
+			if (str[i] == '>' || str[i] == '<')
 			{
 				count++;
 				i++;
@@ -64,13 +71,13 @@ void	addspace(int *i, int *j, char *spaced, char *str)
 		*i = *i + 1;
 	}
 }
- 
-void execspaceit(int *i, int *j, char *spaced, char *str)
+
+void	execspaceit(int *i, int *j, char *spaced, char *str)
 {
 	if ((str[*i] == '|' || str[*i] == '>' || str[*i] == '<'
-	|| str[*i] == '\"' || str[*i] == '\''))
+			|| str[*i] == '\"' || str[*i] == '\''))
 		addspace(i, j, spaced, str);
-	else 
+	else
 	{
 		spaced[*j] = str[*i];
 		*j = *j + 1;
@@ -78,7 +85,7 @@ void execspaceit(int *i, int *j, char *spaced, char *str)
 	}
 	return ;
 }
-//separer les token et les cmd par des espaces (pour split)
+
 char	*spaceit(char *str)
 {
 	int		i;
@@ -99,4 +106,4 @@ char	*spaceit(char *str)
 	}
 	spaced[j] = '\0';
 	return (free(str), spaced);
-} 
+}

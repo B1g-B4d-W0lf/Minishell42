@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:45:34 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/18 20:20:58 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/20 18:19:30 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ char	**findpath(char **envp)
 	}
 	return (NULL);
 }
+
 char	*whilenorm(char *str, char *s2, int i, int j)
 {
 	while (s2[j])
@@ -62,7 +63,7 @@ char	*whilenorm(char *str, char *s2, int i, int j)
 	return (str);
 }
 
-int isbuiltin(char *str)
+int	isbuiltin(char *str)
 {
 	if (!strncmp(str, "echo", 4))
 		return (1);
@@ -81,22 +82,22 @@ int isbuiltin(char *str)
 	return (0);
 }
 
-char *sendpath(char **str, char **paths)
+char	*sendpath(char **str, char **paths)
 {
 	int		i;
 	char	*pathtest;
 	char	*dup;
-	
+
 	i = 0;
 	pathtest = NULL;
 	if (*str == NULL || isbuiltin(*str) || paths == NULL)
-		return(NULL);
+		return (NULL);
 	if (findchar(*str, '/'))
 	{
 		*str = dupcmdslash(*str, &dup);
 		return (dup);
 	}
-	while(paths[i])
+	while (paths[i])
 	{
 		pathtest = ft_sup_join(paths[i], '/', *str);
 		if (access(pathtest, F_OK) == 0)

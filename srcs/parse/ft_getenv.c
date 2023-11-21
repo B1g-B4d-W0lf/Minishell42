@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 21:16:55 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/11 20:30:53 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/20 18:16:12 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*copyenv(char **envp, int i, int len)
 {
 	int		j;
 	char	*var;
-	
+
 	j = 0;
 	var = malloc((ft_strlen(envp[i]) - len) * sizeof(char));
 	len++;
@@ -32,7 +32,7 @@ char	*copyenv(char **envp, int i, int len)
 	return (var);
 }
 
-char *ft_getenv(char *str, char **envp)
+char	*ft_getenv(char *str, char **envp)
 {
 	int		i;
 	int		len;
@@ -44,7 +44,6 @@ char *ft_getenv(char *str, char **envp)
 	{
 		if (!ft_strncmp(str, envp[i], len))
 		{
-			
 			if (!envp[i][len] || !envp[i][len + 1])
 				return (NULL);
 			if (envp[i][len] == '=')
@@ -55,5 +54,5 @@ char *ft_getenv(char *str, char **envp)
 		}
 		i++;
 	}
-	return(free(str), NULL);
+	return (free(str), NULL);
 }

@@ -6,7 +6,7 @@
 #    By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/16 22:27:42 by amonier           #+#    #+#              #
-#    Updated: 2023/11/18 20:27:47 by wfreulon         ###   ########.fr        #
+#    Updated: 2023/11/21 01:47:49 by wfreulon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,23 +53,10 @@ SRCS_NAMES		= 	main/main.c		\
 					exec/ft_strjoin_triple.c							\
 					exec/builtin/secure_printf.c						\
 					parsing/split_utils.c \
-					parsing/check_tokens_utils.c \
-					parsing/check_tokens_main.c \
-					parsing/cmd_split.c \
-					parsing/search_redir.c \
-					parsing/check_quotes.c \
 					parsing/utils_redir.c \
 					parsing/quotes_state.c \
 					parsing/quotes_state_utils.c \
-					parsing/dollar.c \
-					parsing/env_var_update.c \
-					parsing/checking.c \
 					parsing/free.c \
-					parsing/remove_quotes.c \
-					parsing/check_prompt.c \
-					parsing/get.c \
-					parsing/line.c		\
-					parsing/to_expand.c \
 					patch/here_doc.c									\
 					patch/create_temp_files.c							\
 					patch/unlink_tmp_files.c							\

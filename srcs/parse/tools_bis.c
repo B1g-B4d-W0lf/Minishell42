@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 20:15:15 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/18 20:24:33 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/20 18:07:58 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,21 @@
 int	checkdollar(char *str)
 {
 	int	i;
-	int count;
+	int	count;
 
 	i = 0;
 	count = 0;
 	while (str[i])
 	{
-		if (str[i] == '$' && (insidequotesstr(str, i) == 2 || insidequotesstr(str, i) == 0))
+		if (str[i] == '$' && (insidequotesstr(str, i) == 2
+				|| insidequotesstr(str, i) == 0))
 			count++;
 		i++;
 	}
 	return (count);
 }
 
-int totallen(char **str)
+int	totallen(char **str)
 {
 	int	i;
 	int	j;
@@ -48,7 +49,7 @@ int totallen(char **str)
 	return (total);
 }
 
-char *ft_strduppos(char *src, int start, int end)
+char	*ft_strduppos(char *src, int start, int end)
 {
 	char	*dest;
 	int		i;

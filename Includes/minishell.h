@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 04:52:38 by alex              #+#    #+#             */
-/*   Updated: 2023/11/18 20:29:38 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/21 01:45:04 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,42 +149,16 @@ void				ft_clean_env(char **env);
 int					ft_update_pwd(char **env, char *oldpwd, char *pwd);
 
 /* Split utils */
-
 void				ft_clean_split(char **split);
 int					ft_split_len(char **split);
 
-/* Check tokens utils */
-
-int					ft_dollar(char *line, int i, t_cmd *cmd);
-int					ft_redir(char *line, int i, t_cmd *cmd);
-int					ft_pipe(char *line, int i, t_cmd *cmd);
-int					ft_quote(char *line, int i, t_cmd *cmd);
-
 /* Check tokens main */
-
-void				ft_check_elements(char *line, t_cmd *cmd);
 int					ft_is_token(char c);
 
-/* Cmd trim */
-
-char				**ft_cmd_split(char const *s, char *set);
-
-/* Search redir */
-
-int					ft_alloc_files(t_cmd *cmd);
-int					ft_fnm_len(char *line, int i, t_cmd *cmd);
-char				*ft_search_redir(char *str, t_cmd *cmd);
-
 /* Utils redir */
-
-int					ft_next_redir(char *str, int i);
-void				ft_pass_space(char *str, int *i, int *n);
-int					ft_check_parse_redir(char *str, int i);
 char				*ft_tjoin(char *s1, char *s2);
 
 /* Check quotes */
-
-int					ft_check_quote_syntax(char *str);
 int					ft_check_cmd(char **cmd);
 
 /* Quote state */
@@ -199,46 +173,12 @@ t_state				ft_process_double_quote(char c, t_state state);
 t_state				ft_process_single_in_double(char c, t_state state);
 t_state				ft_process_double_in_single(char c, t_state state);
 
-/* Dollar */
-
-char				*ft_dol_search(char *arg, char **env, t_cmd *cmd, int *j);
-
 /* Checking */
-
-char				ft_check_dt(char *str);
-int					ft_check_pipes(char *str);
-int					ft_wf(char **input, char **output, int *redir_type);
-char				ft_check_triple_redir(char *str);
 int					ft_check_dir(t_mini *mini, int pos);
 
 /* Free */
 
 void				ft_free_cmds(int i, t_mini *mini);
-
-/* Remove Quotes */
-
-void				ft_replace_quotes(t_cmd *cmd, int len);
-char				*ft_wo_quote(char *str);
-
-/* Check Prompt */
-
-int					ft_check_prompt(char *line);
-int					ft_triple(char *line);
-int					ft_check_redir(t_mini *mini, int j);
-
-/* Get */
-
-void				ft_search_path(t_mini *mini, int n);
-
-/* Line */
-
-int					ft_cmds(char **cmd, t_cmd *cmds, char **env);
-int					ft_line(char *line, t_mini *mini);
-
-/* Expand */
-
-void				ft_to_expand(char *arg, t_cmd *cmd);
-int					ft_is_expandable(char *arg, int i);
 
 // ------------------------------------------------------------------
 char				**environment(char **envp);
@@ -419,6 +359,7 @@ int					parse(t_mini *mini, char *line);
 int					symbolcount(char *str);
 char				*spaceit(char *str);
 void				addspace(int *i, int *j, char *spaced, char *str);
+void				dupcmdquote(char **cmd, char **src, int *i, int *j);
 
 //envp.c : gestion des paths
 char				**findpath(char **envp);
@@ -428,7 +369,7 @@ char				**realloc_envp(char **envp);
 char				*whilenorm(char *str, char *s2, int i, int j);
 
 //free.c : free les malloc
-void				cleanleak(t_minish *mini);
+void				cleanleak(int len, t_mini *mini);
 void				freedoubletab(char **tabl);
 void				freecreations(char *str, char **line, char **quote, char **paths);
 
@@ -437,7 +378,7 @@ char				*expanding(char *str, char **envp);
 
 //quotes.c : gestion des quotes
 int					insidequotes(char **str, int pos);
-char				**sortquotes(char *str);
+char				**sortquotes(char *str, char **tabl);
 int					insidequotesstr(char *str, int pos);
 
 //quotes_utils.c
