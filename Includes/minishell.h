@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 04:52:38 by alex              #+#    #+#             */
-/*   Updated: 2023/11/21 17:07:12 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/22 20:10:28 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -383,18 +383,20 @@ void				cleanleak(int len, t_mini *mini);
 void				freedoubletab(char **tabl);
 void				freecreations(char *str, char **line, \
 char **quote, char **paths);
+int					freeints(int *firstquote, int *t, int *pos);
 
 //expand.c : gestion expand
 char				*expanding(char *str, char **envp);
 
 //quotes.c : gestion des quotes
-int					insidequotes(char **str, int pos);
+int					insidequotes(char **str, int a, int b);
 char				**sortquotes(char *str, char **tabl);
 int					insidequotesstr(char *str, int pos);
 
 //quotes_utils.c
 int					countquotes(char *str);
-int					afterquotes(char **str, int firstquote, int pos, int *i);
+int					afterquotes(char **str, int *fq, int a, int b);
+int					whilenofq(char **str, int *pos, int *fq, int *t);
 
 //redir.c :gestion outfile et infile
 char				**sortfiles(char **str, char c);
@@ -425,4 +427,15 @@ int					totallen(char **str);
 char				*ft_strduppos(char *src, int start, int end);
 char				*ft_sup_join(char *s1, char c, char *s2);
 char				*dupcmdslash(char *cmd, char **dup);
+
+//patch.c
+int					isvaliddollar(char *str, int pos);
+int					isnospace(char *str, int *i, int *j);
+char				*ft_dupquotes(char *str, int start, int end);
+int					whilequote(char **str, int i);
+
+//patch_bis
+void				set_to_null(t_cmd *cmd);
+int					mallocfailint(int *t, int *fq, int *pos);
+
 #endif

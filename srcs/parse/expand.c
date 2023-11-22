@@ -6,27 +6,11 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 17:57:15 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/21 20:42:19 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/22 15:57:07 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	isvaliddollar(char *str, int pos)
-{
-	if (str[pos] == '$')
-	{
-		if (pos > 0)
-		{
-			if (ft_isalnum(str[pos - 1]))
-				return (1);
-		}
-		if (!str[pos + 1] || str[pos + 1] == ' ')
-			return (1);
-		return (0);
-	}
-	return (1);
-}
 
 void	execreplace(char *str, char **temp, char *expanded, int *t)
 {

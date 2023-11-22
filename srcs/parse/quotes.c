@@ -6,32 +6,39 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:19:41 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/22 01:31:43 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/22 20:10:46 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	insidequotes(char **str, int pos)
+int	insidequotes(char **str, int a, int b)
 {
-	int	i;
-	int	j;
-	int	firstquote;
+	int	*t;
+	int	*pos;
+	int	*firstquote;
 
-	i = 0;
-	while (str[i])
+	firstquote = malloc(2 * sizeof(int));
+	t = malloc(3 * sizeof(int));
+	pos = malloc(2 * sizeof(int));
+	if (!firstquote || !t || !pos)
+		return (mallocfailint(t, firstquote, pos));
+	t[0] = 0;
+	t[1] = 0;
+	t[2] = 0;
+	pos[0] = a;
+	pos[1] = b;
+	while (str[t[0]])
 	{
-		if (str[i][0] == '\'' || str[i][0] == '\"')
+		while (str[t[0]][t[1]])
 		{
-			firstquote = i;
-			i++;
-			j = afterquotes(str, firstquote, pos, &i);
-			if (j != 0)
-				return (j);
+			if (whilenofq(str, pos, firstquote, t))
+				return (freeints(firstquote, t, pos));
 		}
-		i++;
+		t[0]++;
+		t[1] = 0;
 	}
-	return (0);
+	return (freeints(firstquote, t, pos));
 }
 
 int	*quotespos(char *str)
@@ -63,66 +70,6 @@ int	*quotespos(char *str)
 	return (tabl);
 }
 
-int	isnospace(char *str, int *i, int *j)
-{
-	int	ab;
-	int	bc;
-
-	ab = *i;
-	bc = *j;
-	if (*i > 0)
-	{
-		if (str[*i - 1] != ' ')
-		{
-			while (*i > 0 && str[*i - 1] != ' ')
-				*i = *i - 1;
-		}
-	}
-	if (str[*j + 1] && str[*j + 1] != ' ')
-	{
-		while (str[*j] && str[*j] != ' ')
-			*j = *j + 1;
-	}
-	if (*i != ab || *j != bc)
-		return (1);
-	return (0);
-}
-
-char	*ft_dupquotes(char *str, int start, int end)
-{
-	char	*tabl;
-	int		i;
-	int		ab;
-
-	ab = start;
-	i = -1;
-	if (isnospace(str, &start, &end))
-	{
-		tabl = malloc((end - start + 2) * sizeof(char));
-		if (!tabl)
-			return (NULL);
-		tabl[++i] = str[ab];
-		while (start < end)
-		{
-			if (str[start] != str[ab])
-			{
-				tabl[++i] = str[start];
-				start++;
-			}
-			else
-				start++;
-		}
-		if (tabl[i] != str[ab])
-			tabl[++i] = str[ab];
-		tabl[++i] = '\0';
-	}
-	else
-		tabl = ft_strduppos(str, start, end);
-	return (tabl);
-}
-//find a way to not space quotes and inquote spechar
-//and check the whole chunk for smth inquote then
-//replace said chunk
 char	**sortquotes(char *str, char **tabl)
 {
 	int		t[3];

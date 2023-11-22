@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 16:34:51 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/21 15:29:39 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/22 16:04:51 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ int	symbolcount(char *str)
 	i = 1;
 	count = 0;
 	if (((str[0] == '<' || str[0] == '>') && (str[1] != '<'
-				|| str[1] != '>')) || (str[0] == '\'' || str[0] == '\"'))
+				|| str[1] != '>')))
 		count++;
 	while (str[i])
 	{
-		if ((str[i] == '|' || str[i] == '>' || str[i] == '<'
-				|| str[i] == '\'' || str[i] == '\"'))
+		if ((str[i] == '|' || str[i] == '>' || str[i] == '<')
+			&& insidequotesstr(str, i) == 0)
 		{
 			count = count + 2;
 			i++;
@@ -74,8 +74,8 @@ void	addspace(int *i, int *j, char *spaced, char *str)
 
 void	execspaceit(int *i, int *j, char *spaced, char *str)
 {
-	if ((str[*i] == '|' || str[*i] == '>' || str[*i] == '<'
-			|| str[*i] == '\"' || str[*i] == '\''))
+	if ((str[*i] == '|' || str[*i] == '>' || str[*i] == '<')
+		&& insidequotesstr(str, *i) == 0)
 		addspace(i, j, spaced, str);
 	else
 	{

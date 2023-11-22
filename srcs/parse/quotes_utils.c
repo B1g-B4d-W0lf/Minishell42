@@ -6,11 +6,27 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 18:58:34 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/20 17:45:59 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/22 19:55:11 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	whilenofq(char **str, int *pos, int *fq, int *t)
+{
+	if (str[t[0]][t[1]] == '\'' || str[t[0]][t[1]] == '\"')
+	{
+		fq[0] = t[0];
+		fq[1] = t[1];
+		t[2] = afterquotes(str, fq, pos[0], pos[1]);
+		if (t[2] != 0)
+			return (t[2]);
+		t[0] = fq[0];
+		t[1] = fq[1];
+	}
+	t[1]++;
+	return (0);
+}
 
 int	countquotes(char *str)
 {
@@ -28,34 +44,55 @@ int	countquotes(char *str)
 	return (count);
 }
 
-int	comparepos(int pos, int firstquote, int secondquote)
+int	comparedoublepos(int a, int b, int *firstquote, int *secondquote)
 {
-	if (pos > firstquote && pos < secondquote)
-		return (1);
+	if (a >= firstquote[0])
+	{
+		if (a == firstquote[0] && b < firstquote[1])
+			return (0);
+		else if (a == secondquote[0] && b < secondquote[1])
+			return (1);
+		else if (a <= secondquote[0])
+			return (1);
+	}
 	return (0);
 }
 
-int	afterquotes(char **str, int firstquote, int pos, int *i)
+void	whilenosq(char **str, int *fq, int *i, int *j)
 {
-	int	secondquote;
+	while (str[*i][*j] && str[*i][*j] != str[fq[0]][fq[1]])
+		*j = *j + 1;
+	if (str[*i][*j] == str[fq[0]][fq[1]])
+		return ;
+	*i = *i + 1;
+	*j = 0;
+}
 
-	while (str[*i] && str[*i][0] != str[firstquote][0])
+int	afterquotes(char **str, int *fq, int a, int b)
+{
+	int	*sq;
+	int	i;
+	int	j;
+
+	sq = malloc(2 * sizeof(int));
+	if (!sq)
+		return (-1);
+	i = fq[0];
+	j = fq[1] + 1;
+	while (str[i] && str[i][j] != str[fq[0]][fq[1]])
+		whilenosq(str, fq, &i, &j);
+	if (str[i] && str[i][j] == str[fq[0]][fq[1]])
 	{
-		if (str[*i][0] == str[firstquote][0])
-			break ;
-		*i = *i + 1;
+		sq[0] = i;
+		sq[1] = j;
+		if (comparedoublepos(a, b, fq, sq) && str[fq[0]][fq[1]] == '\'')
+			return (free(sq), 1);
+		else if (comparedoublepos(a, b, fq, sq) && str[fq[0]][fq[1]] == '\"')
+			return (free(sq), 2);
 	}
-	if (str[*i] && str[*i][0] == str[firstquote][0])
-	{
-		secondquote = *i;
-		if (comparepos(pos, firstquote, secondquote)
-			&& str[firstquote][0] == '\'')
-			return (1);
-		else if (comparepos(pos, firstquote, secondquote)
-			&& str[firstquote][0] == '\"')
-			return (2);
-	}
-	else if (!str[*i])
-		return (3);
-	return (0);
+	else if (!str[i])
+		return (free(sq), 3);
+	fq[0] = i;
+	fq[1] = j;
+	return (free(sq), 0);
 }

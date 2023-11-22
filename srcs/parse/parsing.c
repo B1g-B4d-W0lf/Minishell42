@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:44:06 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/22 01:21:43 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/22 18:03:44 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ void	execfillcmd(t_cmd *cmd, char **paths, char **line)
 	cmd->cmd = findcmd(line);
 	if (cmd->cmd)
 		cmd->path = sendpath(&cmd->cmd[0], paths);
-	else if (!cmd->cmd)
-		cmd->path = NULL;
 }
 
 int	fillcmd(char *str, char **envp, t_cmd *cmd)
@@ -37,6 +35,7 @@ int	fillcmd(char *str, char **envp, t_cmd *cmd)
 	char	**paths;
 	char	*spaced;
 
+	set_to_null(cmd);
 	paths = findpath(envp);
 	spaced = expanding(str, envp);
 	quote = malloc((countquotes(spaced) + 1) * sizeof (char *));
