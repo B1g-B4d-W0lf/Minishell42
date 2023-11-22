@@ -6,11 +6,27 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 17:57:15 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/21 17:02:18 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/21 20:42:19 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	isvaliddollar(char *str, int pos)
+{
+	if (str[pos] == '$')
+	{
+		if (pos > 0)
+		{
+			if (ft_isalnum(str[pos - 1]))
+				return (1);
+		}
+		if (!str[pos + 1] || str[pos + 1] == ' ')
+			return (1);
+		return (0);
+	}
+	return (1);
+}
 
 void	execreplace(char *str, char **temp, char *expanded, int *t)
 {
@@ -19,15 +35,15 @@ void	execreplace(char *str, char **temp, char *expanded, int *t)
 
 	l = -1;
 	k = t[2];
-	if (str[t[0]] == '$' && (insidequotesstr(str, t[0]) == 2
+	if (!isvaliddollar(str, t[0]) && (insidequotesstr(str, t[0]) == 2
 			|| insidequotesstr(str, t[0]) == 0))
 	{
 		t[0] = t[0] + 1;
 		if (str[t[0]] == '?')
 			t[0] = t[0] + 1;
-		if (isdigit(str[t[0]]))
+		else if (isdigit(str[t[0]]))
 			t[0] = t[0] + 1;
-		else
+		else if (str[t[0]] != '?' && !isdigit(str[t[0]]))
 		{
 			while (str[t[0]] && ft_isalnum(str[t[0]]))
 				t[0] = t[0] + 1;
@@ -83,8 +99,7 @@ void	execexpand(t_expand *e)
 {
 	extern int	g_status;
 
-	if (e->str[e->i + 1] && e->str[e->i + 1] == '?' && (!e->str[e->i + 2]
-			|| e->str[e->i + 2] == ' ' || e->str[e->i + 2] == '\"'))
+	if (e->str[e->i + 1] && e->str[e->i + 1] == '?')
 	{
 		e->tp[e->j] = ft_itoa(g_status);
 		e->i = e->i + 2;
@@ -123,7 +138,7 @@ char	*expanding(char *str, char **envp)
 		return (NULL);
 	while (str[exp.i])
 	{
-		if (str[exp.i] == '$' && (insidequotesstr(str, exp.i) == 2
+		if (!isvaliddollar(str, exp.i) && (insidequotesstr(str, exp.i) == 2
 				|| insidequotesstr(str, exp.i) == 0))
 			execexpand(&exp);
 		if (str[exp.i])

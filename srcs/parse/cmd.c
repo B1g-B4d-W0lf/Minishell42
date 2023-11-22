@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 20:21:55 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/20 23:20:17 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/21 20:24:32 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@ char	**addquoted(char **str, char **quotetab)
 	if (isemptyquote(str) == 1)
 		return (freedoubletab(str), NULL);
 	t = malloc(3 * sizeof(int));
-	if (!t)
+	line = malloc((sizeofdoubletab(str) + 1) * sizeof (char *));
+	if (!t || !line)
 		return (NULL);
 	t[0] = 0;
 	t[1] = 0;
 	t[2] = 0;
-	line = malloc((sizeofdoubletab(str) + 1) * sizeof (char *));
 	while (str[t[0]])
 	{
 		while (str[t[0]] && (str[t[0]][0] == '\"' || str[t[0]][0] == '\''))

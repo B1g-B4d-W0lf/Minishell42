@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 16:51:21 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/20 18:15:02 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/21 20:23:13 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	ispipe(char *str)
 	pipe = 0;
 	while (str[i])
 	{
-		if (str[i] == '|' && str[i + 1] != '|')
+		if (str[i] == '|' && insidequotesstr(str, i) == 0)
 			pipe ++;
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 20:15:15 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/20 18:07:58 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/21 19:36:45 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ char	*dupcmdslash(char *cmd, char **dup)
 	int		count;
 	char	*str;
 
-	s = 0;
 	p = 0;
 	count = 0;
 	if (cmd[0] == '/')

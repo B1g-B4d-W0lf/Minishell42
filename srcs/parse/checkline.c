@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 20:21:20 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/21 15:55:07 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/22 00:32:08 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,16 @@ char	symbolerrors(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '|' && str[i + 1] == '|')
+		if (str[i] == '|' && str[i + 1] == '|' && insidequotesstr(str, i) == 0)
 			return (str[i]);
-		if ((str[i] == '>' && str[i + 1] == '<')
-			|| (str[i] == '<' && str[i + 1] == '>'))
+		if (insidequotesstr(str, i) == 0 && ((str[i] == '>'
+					&& str[i + 1] == '<')
+				|| (str[i] == '<' && str[i + 1] == '>')))
 			return (str[i]);
-		if (str[i] == '<' && str[i + 1] == '<'
+		if (insidequotesstr(str, i) == 0 && str[i] == '<' && str[i + 1] == '<'
 			&& (str[i + 2] == '>' || str[i + 2] == '<'))
 			return (str[i]);
-		if (str[i] == '>' && str[i + 1] == '>'
+		if (insidequotesstr(str, i) == 0 && str[i] == '>' && str[i + 1] == '>'
 			&& (str[i + 2] == '>' || str[i + 2] == '<'))
 			return (str[i]);
 		i++;
