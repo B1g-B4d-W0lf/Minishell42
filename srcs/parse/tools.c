@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 16:51:21 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/22 20:40:29 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/27 18:56:01 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void	fillnull(char **str, int *i, int len)
 void	dupcmd(char **cmd, char **src, int *i, int *j)
 {
 	if ((src[*j][0] == '\"' || src[*j][0] == '\''))
-		// && src[*j][1] != src[*j][0])
 		cmd[*i] = ft_strduppos(src[*j], 1, ft_strlen(src[*j]) - 2);
 	else
 		cmd[*i] = ft_strdup(src[*j]);

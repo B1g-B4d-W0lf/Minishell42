@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 17:57:15 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/22 15:57:07 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/27 18:52:29 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	execexpand(t_expand *e)
 	}
 }
 
-char	*expanding(char *str, char **envp)
+char	*expanding(char *str, char **envp, t_cmd *cmd)
 {
 	t_expand	exp;
 
@@ -117,6 +117,7 @@ char	*expanding(char *str, char **envp)
 	exp.env = envp;
 	if (!checkdollar(str))
 		return (str);
+	cmd->token = '$';
 	exp.tp = malloc((checkdollar(str) + 1) * sizeof(char *));
 	if (exp.tp == NULL)
 		return (NULL);

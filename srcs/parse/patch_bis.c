@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:58:54 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/27 17:59:58 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/27 18:47:08 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	set_to_null_cmd(t_cmd *cmd)
 	cmd->redir_out = 0;
 	cmd->cmd = NULL;
 	cmd->path = NULL;
+	cmd->token = '\0';
 }
 
 void	set_to_null_fill(t_fill *fill)

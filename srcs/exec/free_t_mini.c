@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_t_mini.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jehubert <jehubert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 20:01:32 by amonier           #+#    #+#             */
-/*   Updated: 2023/08/09 17:17:54 by jehubert         ###   ########.fr       */
+/*   Updated: 2023/11/27 18:57:34 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ void	free_t_cmd(t_cmd *macmd)
 		free_double_tab_char(macmd->input_file);
 	if (macmd->output_file != NULL)
 		free_double_tab_char(macmd->output_file);
-	if (macmd->token != NULL)
-		free(macmd->token);
 	if (macmd->redir_type != NULL)
 		free(macmd->redir_type);
 	return ;

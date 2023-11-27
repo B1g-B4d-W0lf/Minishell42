@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 04:52:33 by alex              #+#    #+#             */
-/*   Updated: 2023/11/21 17:14:12 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/27 20:06:43 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	process_line(t_mini *mini, char *line)
 			return ;
 		add_history(line);
 		mini->nb_cmd = parse(mini, line);
-		//printcmd(mini, mini->cmds);
+		// printcmd(mini, mini->cmds);
 		if (mini->nb_cmd == -1)
 		{
 			g_status = 2;

@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:44:06 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/27 17:59:35 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/27 18:56:34 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	execfillcmd(t_cmd *cmd, t_fill *fill, t_mini *mini)
 {
 	cmd->hd = malloc(countredir(fill->line) * sizeof(int));
 	if (!cmd->hd)
-		return(mallocerror(fill, mini)) ;
+		return (mallocerror(fill, mini));
 	cmd->redir_type = sortredir(fill->line, cmd->hd);
 	cmd->redir = countredir(fill->line);
 	cmd->input_file = sortfiles(fill->line, '<');
@@ -38,7 +38,7 @@ int	fillcmd(char *str, t_mini *mini, t_cmd *cmd)
 	set_to_null_cmd(cmd);
 	set_to_null_fill(fill);
 	fill->paths = findpath(mini->envp);
-	fill->spaced = expanding(str, mini->envp);
+	fill->spaced = expanding(str, mini->envp, cmd);
 	fill->quote = malloc((countquotes(fill->spaced) + 1) * sizeof (char *));
 	if (fill->quote == NULL)
 		return (mallocerror(fill, mini), -1);

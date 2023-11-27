@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 04:52:38 by alex              #+#    #+#             */
-/*   Updated: 2023/11/25 21:16:01 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/27 18:52:20 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,11 @@ enum
 typedef struct s_cmd
 {
 	char			**cmd;
-	int				*to_expand;
-	int				*var_len;
 	char			*path;
 	char			**input_file;
 	char			**output_file;
 	int				*hd;
-	char			**token;
+	char			token;
 	int				redir;
 	int				*redir_type;
 	int				redir_in;
@@ -380,7 +378,7 @@ void				freetfill(t_fill *fill);
 int					freeints(int *firstquote, int *t, int *pos);
 
 //expand.c : gestion expand
-char				*expanding(char *str, char **envp);
+char				*expanding(char *str, char **envp, t_cmd *cmd);
 
 //quotes.c : gestion des quotes
 int					insidequotes(char **str, int a, int b);

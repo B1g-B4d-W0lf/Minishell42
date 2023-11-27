@@ -6,7 +6,7 @@
 #    By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/16 22:27:42 by amonier           #+#    #+#              #
-#    Updated: 2023/11/22 18:03:28 by wfreulon         ###   ########.fr        #
+#    Updated: 2023/11/27 19:00:23 by wfreulon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,6 @@ DIR_OBJS	= objs
 
 SRCS_NAMES		= 	main/main.c		\
 					main/ctrlc.c	\
-					parsing/env.c		\
 					exec/clear_double_tab_int.c		\
 					exec/exec.c										\
 					exec/child.c									\
@@ -52,16 +51,17 @@ SRCS_NAMES		= 	main/main.c		\
 					exec/print_error.c									\
 					exec/ft_strjoin_triple.c							\
 					exec/builtin/secure_printf.c						\
-					parsing/split_utils.c \
-					parsing/utils_redir.c \
-					parsing/quotes_state.c \
-					parsing/quotes_state_utils.c \
-					parsing/free.c \
+					patch/env.c		\
+					patch/split_utils.c \
+					patch/utils_redir.c \
+					patch/quotes_state.c \
+					patch/quotes_state_utils.c \
+					patch/free.c \
 					patch/here_doc.c									\
 					patch/create_temp_files.c							\
 					patch/unlink_tmp_files.c							\
 					patch/dollar_bis.c	\
-					parsing/check_bis.c \
+					patch/check_bis.c \
 					patch/random_names.c \
 					patch/rnl.c	\
 					patch/ctrl_here_doc.c	\

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jehubert <jehubert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 04:01:47 by alex              #+#    #+#             */
-/*   Updated: 2023/09/16 21:53:23 by jehubert         ###   ########.fr       */
+/*   Updated: 2023/11/27 18:46:30 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	ft_empty_cmd_from_env(t_mini *minsh, int position)
 {
 	if (minsh->cmds[position].cmd[0][0] == 0)
 	{
-		if (minsh->cmds[position].token[0][0] == '$')
+		if (minsh->cmds[position].token == '$')
 			return (1);
 		else
 			return (0);

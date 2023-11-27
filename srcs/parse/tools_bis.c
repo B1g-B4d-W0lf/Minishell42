@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 20:15:15 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/21 19:36:45 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/27 20:07:29 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,10 @@ char	*dupcmdslash(char *cmd, char **dup)
 		str = ft_strduppos(cmd, p, ft_strlen(cmd) - 1);
 		*dup = ft_strduppos(cmd, 0, p - 1);
 	}
-	free(cmd);
-	return (str);
+	else
+	{
+		str = ft_strdup(cmd);
+		*dup = NULL;
+	}
+	return (free(cmd), str);
 }
