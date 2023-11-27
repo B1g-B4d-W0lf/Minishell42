@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 20:21:55 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/22 16:03:56 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/27 17:30:00 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,10 @@ char	**addquoted(char **str, char **quotetab)
 	char	**line;
 
 	if (isemptyquote(str) == 1)
+	{
+		ft_printf("syntax error\n");
 		return (freedoubletab(str), NULL);
+	}
 	t = malloc(3 * sizeof(int));
 	line = malloc((sizeofdoubletab(str) + 1) * sizeof (char *));
 	if (!t || !line)

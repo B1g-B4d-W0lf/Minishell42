@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 04:52:38 by alex              #+#    #+#             */
-/*   Updated: 2023/11/22 20:10:28 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/25 21:16:01 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,19 +121,14 @@ typedef struct s_expand
 	char			**tp;
 }					t_expand;
 
-// typedef struct s_fill
-// {
-// 	char	**cmd;
-// 	char	*path;
-// 	char	**infile;
-// 	char	**outfile;
-// 	char	**quote;
-// 	int		redir;
-// 	int		*redirtype;
-// 	int		redin;
-// 	int		redout;
-// 	int		nbr;
-// }		t_fill;
+typedef struct s_fill
+{
+	char	**line;
+	char	**paths;
+	char	*spaced;
+	char	**quote;
+	char	**envp;
+}		t_fill;
 
 // typedef struct s_minish
 // {
@@ -381,8 +376,7 @@ char				*whilenorm(char *str, char *s2, int i, int j);
 //free.c : free les malloc
 void				cleanleak(int len, t_mini *mini);
 void				freedoubletab(char **tabl);
-void				freecreations(char *str, char **line, \
-char **quote, char **paths);
+void				freetfill(t_fill *fill);
 int					freeints(int *firstquote, int *t, int *pos);
 
 //expand.c : gestion expand
@@ -435,7 +429,9 @@ char				*ft_dupquotes(char *str, int start, int end);
 int					whilequote(char **str, int i);
 
 //patch_bis
-void				set_to_null(t_cmd *cmd);
+void				set_to_null_cmd(t_cmd *cmd);
+void				set_to_null_fill(t_fill *fill);
 int					mallocfailint(int *t, int *fq, int *pos);
+void				mallocerror(t_fill *fill, t_mini *mini);
 
 #endif

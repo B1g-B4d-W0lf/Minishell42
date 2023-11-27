@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 17:04:36 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/22 20:09:56 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/25 21:20:13 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,28 +33,23 @@ void	cleanleak(int len, t_mini *mini)
 	i = 0;
 	while (i < len)
 	{
-		freedoubletab(mini->cmds[i].cmd);
-		free(mini->cmds[i].path);
-		free(mini->cmds[i].redir_type);
-		free(mini->cmds[i].input_file);
-		free(mini->cmds[i].output_file);
-		free(mini->cmds[i].hd);
+		if (mini->cmds[i].cmd)
+			freedoubletab(mini->cmds[i].cmd);
+		if (mini->cmds[i].path)
+			free(mini->cmds[i].path);
+		if (mini->cmds[i].redir_type)
+			free(mini->cmds[i].redir_type);
+		if (mini->cmds[i].input_file)
+			freedoubletab(mini->cmds[i].input_file);
+		if (mini->cmds[i].output_file)
+			free(mini->cmds[i].output_file);
+		if (mini->cmds[i].hd)
+			free(mini->cmds[i].hd);
 		i++;
 	}
 	free(mini->cmds);
 	freedoubletab(mini->envp);
 	free(mini->cmds);
-}
-
-void	freecreations(char *str, char **line, char **quote, char **paths)
-{
-	if (line)
-		freedoubletab(line);
-	if (quote)
-		freedoubletab(quote);
-	if (paths)
-		freedoubletab(paths);
-	free(str);
 }
 
 int	freeints(int *firstquote, int *t, int *pos)
@@ -69,4 +64,17 @@ int	freeints(int *firstquote, int *t, int *pos)
 	if (firstquote)
 		free(firstquote);
 	return (i);
+}
+
+void	freetfill(t_fill *fill)
+{
+	if (fill->line)
+		freedoubletab(fill->line);
+	if (fill->quote)
+		freedoubletab(fill->quote);
+	if (fill->paths)
+		freedoubletab(fill->paths);
+	if (fill->spaced)
+		free(fill->spaced);
+	free (fill);
 }

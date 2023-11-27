@@ -6,52 +6,50 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:44:06 by wfreulon          #+#    #+#             */
-/*   Updated: 2023/11/22 18:03:44 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/27 17:59:35 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	execfillcmd(t_cmd *cmd, char **paths, char **line)
+void	execfillcmd(t_cmd *cmd, t_fill *fill, t_mini *mini)
 {
-	cmd->hd = malloc(countredir(line) * sizeof(int));
+	cmd->hd = malloc(countredir(fill->line) * sizeof(int));
 	if (!cmd->hd)
-		return ;
-	cmd->redir_type = sortredir(line, cmd->hd);
-	cmd->redir = countredir(line);
-	cmd->input_file = sortfiles(line, '<');
-	cmd->output_file = sortfiles(line, '>');
-	cmd->redir_in = countfiles(line, '<');
-	cmd->redir_out = countfiles(line, '>');
-	cmd->cmd = findcmd(line);
+		return(mallocerror(fill, mini)) ;
+	cmd->redir_type = sortredir(fill->line, cmd->hd);
+	cmd->redir = countredir(fill->line);
+	cmd->input_file = sortfiles(fill->line, '<');
+	cmd->output_file = sortfiles(fill->line, '>');
+	cmd->redir_in = countfiles(fill->line, '<');
+	cmd->redir_out = countfiles(fill->line, '>');
+	cmd->cmd = findcmd(fill->line);
 	if (cmd->cmd)
-		cmd->path = sendpath(&cmd->cmd[0], paths);
+		cmd->path = sendpath(&cmd->cmd[0], fill->paths);
 }
 
-int	fillcmd(char *str, char **envp, t_cmd *cmd)
+int	fillcmd(char *str, t_mini *mini, t_cmd *cmd)
 {
-	char	**line;
-	char	**quote;
-	char	**paths;
-	char	*spaced;
+	t_fill	*fill;
 
-	set_to_null(cmd);
-	paths = findpath(envp);
-	spaced = expanding(str, envp);
-	quote = malloc((countquotes(spaced) + 1) * sizeof (char *));
-	if (quote == NULL)
-		return (freecreations(spaced, NULL, NULL, paths), -1);
-	quote = sortquotes(spaced, quote);
-	spaced = spaceit(spaced);
-	line = ft_split(spaced, ' ');
-	line = addquoted(line, quote);
-	if (!line)
-	{
-		freecreations(spaced, line, quote, paths);
-		return (printf("syntax error\n"), -1);
-	}
-	execfillcmd(cmd, paths, line);
-	freecreations(spaced, line, quote, paths);
+	fill = malloc(1 * sizeof(t_fill));
+	if (!fill)
+		return (mallocerror(NULL, mini), -1);
+	set_to_null_cmd(cmd);
+	set_to_null_fill(fill);
+	fill->paths = findpath(mini->envp);
+	fill->spaced = expanding(str, mini->envp);
+	fill->quote = malloc((countquotes(fill->spaced) + 1) * sizeof (char *));
+	if (fill->quote == NULL)
+		return (mallocerror(fill, mini), -1);
+	fill->quote = sortquotes(fill->spaced, fill->quote);
+	fill->spaced = spaceit(fill->spaced);
+	fill->line = ft_split(fill->spaced, ' ');
+	fill->line = addquoted(fill->line, fill->quote);
+	if (!fill->line)
+		return (freetfill(fill), -1);
+	execfillcmd(cmd, fill, mini);
+	freetfill(fill);
 	return (0);
 }
 
@@ -60,7 +58,8 @@ int	nopipeexec(t_mini *mini, char *line)
 	mini->cmds = malloc(sizeof (t_cmd) * 2);
 	if (!mini->cmds)
 		exit (12);
-	if (fillcmd(ft_strdup(line), mini->envp, &mini->cmds[0]) != 0)
+	mini->nb_cmd = 1;
+	if (fillcmd(ft_strdup(line), mini, &mini->cmds[0]) != 0)
 	{
 		free (mini->cmds);
 		return (-1);
@@ -73,9 +72,10 @@ int	ispipeexec(char **piped, t_mini *mini, char *line)
 	int	i;
 
 	i = 0;
+	mini->nb_cmd = (ispipe(line) + 1);
 	while (piped[i])
 	{	
-		if (fillcmd(piped[i], mini->envp, &mini->cmds[i]) != 0)
+		if (fillcmd(piped[i], mini, &mini->cmds[i]) != 0)
 		{
 			free (mini->cmds);
 			return (-1);

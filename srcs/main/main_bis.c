@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_bis.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jehubert <jehubert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 22:32:30 by jehubert          #+#    #+#             */
-/*   Updated: 2023/09/16 22:32:41 by jehubert         ###   ########.fr       */
+/*   Updated: 2023/11/25 20:05:40 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	ft_start_main(int argc, char **argv, char **envp, t_mini *mini)
 		printf("too many argument");
 		exit(1);
 	}
-	mini->envp = ft_realloc_env(envp);
+	mini->envp = realloc_envp(envp);
 	mini->act_fd = -1;
 	stat_pointer(mini);
 }
