@@ -6,7 +6,7 @@
 /*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 04:52:33 by alex              #+#    #+#             */
-/*   Updated: 2023/11/27 20:06:43 by wfreulon         ###   ########.fr       */
+/*   Updated: 2023/11/28 17:54:40 by wfreulon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,38 +48,6 @@ void	set_signals(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-// void	printcmd(t_mini *mini, t_cmd *cmd)
-// {
-// 	int	i;
-// 	int	j;
-
-// 	i = 0;
-// 	j = 0;
-// 	while (i < mini->nb_cmd)
-// 	{
-// 		while (cmd[i].cmd && cmd[i].cmd[j])
-// 		{
-// 			printf("cmd: %s\n", cmd[i].cmd[j]);
-// 			j++;
-// 		}
-// 		j = 0;
-// 		while (cmd[i].input_file[j])
-// 		{
-// 			printf("infile: %s\n", cmd[i].input_file[j]);
-// 			j++;
-// 		}
-// 		j = 0;
-// 		while (cmd[i].output_file[j])
-// 		{
-// 			printf("outfile: %s\n", cmd[i].output_file[j]);
-// 			j++;
-// 		}
-// 		if (cmd[i].path)
-// 			printf("path: %s\n", cmd[i].path);
-// 		i++;
-// 	}
-// }
-
 void	process_line(t_mini *mini, char *line)
 {
 	extern int	g_status;
@@ -90,7 +58,6 @@ void	process_line(t_mini *mini, char *line)
 			return ;
 		add_history(line);
 		mini->nb_cmd = parse(mini, line);
-		// printcmd(mini, mini->cmds);
 		if (mini->nb_cmd == -1)
 		{
 			g_status = 2;
