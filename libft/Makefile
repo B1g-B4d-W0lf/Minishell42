@@ -6,7 +6,7 @@
 #    By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/11 20:16:59 by wfreulon          #+#    #+#              #
-#    Updated: 2023/05/11 23:17:30 by wfreulon         ###   ########.fr        #
+#    Updated: 2023/11/29 17:36:19 by wfreulon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ HEADERFILES = libft.h
 OBJFILES = $(SRC:.c=.o)
 OBJ_B = $(BONUS:.c=.o)
 CFLAGS = -Wall -Wextra -Werror
-CC = gcc
+CC = cc
 
 $(NAME): $(OBJFILES) $(OBJ_B)
 	ar -rc $@ $^

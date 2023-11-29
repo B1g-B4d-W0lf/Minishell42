@@ -6,7 +6,7 @@
 #    By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/16 22:27:42 by amonier           #+#    #+#              #
-#    Updated: 2023/11/27 19:00:23 by wfreulon         ###   ########.fr        #
+#    Updated: 2023/11/29 17:23:38 by wfreulon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -103,7 +103,7 @@ DIR_DUP		= mkdir -p $(@D)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-#	make -C libft --no-print-directory
+	make -C libft --no-print-directory
 	$(CC) $(CFLAGS) $(OBJS) -lreadline libft/libft.a -o $(NAME)
 	$(info CREATED $(NAME))
 	@echo "DONE !"
@@ -114,11 +114,11 @@ $(DIR_OBJS)/%.o: $(DIR_SRCS)/%.c
 	$(info CREATED $@)
 
 clean:
-#	make -C libft clean --no-print-directory
+	make -C libft clean --no-print-directory
 	$(RM) $(OBJS)
 
 fclean: clean
-#	make -C libft fclean --no-print-directory
+	make -C libft fclean --no-print-directory
 	$(RM) $(NAME)
 
 re: fclean all
